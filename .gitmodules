@@ -1,0 +1,6 @@
+[submodule "controllers/MbiTangoMotorController"]
+	path = controllers/MbiTangoMotorController
+	url = https://github.com/dschick/sardana-MbiTangoMotorController
+[submodule "controllers/tango"]
+	path = controllers/tango
+	url = https://github.com/ALBA-Synchrotron/sardana-tango.git
