@@ -23,7 +23,6 @@ class MbiTangoMotorController(MotorController):
             inst, props, *args, **kwargs)
         
         self._log.info('Initialized')
-        # do some initialization
         self.axis_extra_pars = {}
 
     def AddDevice(self, axis):
