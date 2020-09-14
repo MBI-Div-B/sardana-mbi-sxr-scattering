@@ -3,6 +3,6 @@
 directory structure to get symbolic links working:
 
 ```
-base_path/sardana-systems/sardana-mbi-sxr-scattering
-base_path/sardana-controllers/--controler-repo--/--controller-class.py--
+base_path/Sardana/experiments/--sardana-system-repo--
+base_path/Sardana/controller-repos/--controller-repo--/...
 ```
