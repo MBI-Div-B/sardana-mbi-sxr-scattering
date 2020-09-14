@@ -1,1 +1,1 @@
-../../../sardana-controllers/sardana-MbiTangoMotorController/MbiTangoMotorController.py
+../../../controller-repos/sardana-MbiTangoMotorController/MbiTangoMotorController.py
