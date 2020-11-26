@@ -16,3 +16,9 @@ def laser_off(self):
     proxy.Close()
     self.output("Laser shutter closed!")
 
+
+@macro()
+def laser_state(self):
+    """Macro laser_off"""
+    proxy = DeviceProxy('laser/ThorlabsShutter/0')
+    self.output(proxy.mffstate)
