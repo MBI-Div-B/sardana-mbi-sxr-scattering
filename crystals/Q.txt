@@ -1,0 +1,29 @@
+Created at 2020-11-26 09:45
+
+DiffractometerType E4CV
+
+Crystal    Q
+
+Wavelength 17.536667609618107
+
+A 6.283 B 6.283 C 6.283
+Alpha 90.0 Beta 90.0 Gamma 90.0
+
+R0 0 0.0 0.0 1.0 0 1 1.999966093 0.0 0.0 4.000031249999999
+R1 1 1.0 0.0 1.0 0 1 4.000075957 0.0 0.0 4.000031249999999
+
+Engine hkl
+
+Mode bissector
+
+PsiRef not available in current engine mode
+
+AutoEnergyUpdate 1
+
+U00 1.000 U01 -0.000 U02 -0.000 
+U10 0.000 U11 1.000 U12 0.000 
+U20 0.000 U21 -0.000 U22 1.000 
+
+Ux -3.5083546492687487e-15 Uy -4.9532000058557976e-05 Uz -3.0329602663547327e-21
+
+SaveDirectory /home/labuser/Sardana/experiments/RSXS/crystals
