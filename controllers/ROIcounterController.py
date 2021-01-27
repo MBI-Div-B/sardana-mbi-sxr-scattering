@@ -1,1 +1,1 @@
-../../../controller-repos/ROIcounterController/ROIcounterController.py
+../../../controller-repos/sardana-ROICounterController/ROIcounterController.py
