@@ -55,3 +55,54 @@ def tape_check(self):
             sleep(0.5)
             self.output("Tape is ON!")
 
+@imacro()
+def target_check(self):
+    """Macro target_check"""
+    proxy = DeviceProxy('xpl/faulhaberdcmotor/rsxs')
+    if proxy.speed > 100:
+        # all fine
+        pass
+    else:
+        # target is not rotating
+        self.output('Target is NOT rotating!')
+        answer = ''
+        while answer not in ['y', 'n']:
+            answer = self.input("Start target (y)?")
+
+        if answer == 'n':
+            self.output('ct without rotating target!')
+        else:
+            self.execMacro('target_on')
+            sleep(0.5)
+            self.output("Target is ON!")
+
+
+@macro()
+def target_on(self):
+    """Macro target_on"""
+    self.output("Running target_on...")
+    self.execMacro('umv target_rot 200')
+
+
+@macro()
+def target_off(self):
+    """Macro target_off"""
+    self.output("Running target_off...")
+    self.execMacro('umv target_rot 0')
+
+
+@macro()
+def watchdog_on(self):
+    """Macro watchdog_on"""
+    self.output("Running watchdog_on...")
+    proxy = DeviceProxy('rsxs/watchdog/1')
+    proxy.run()
+
+
+@macro()
+def watchdog_off(self):
+    """Macro watchdog_off"""
+    self.output("Running watchdog_off...")
+    proxy = DeviceProxy('rsxs/watchdog/1')
+    proxy.stop()
+
