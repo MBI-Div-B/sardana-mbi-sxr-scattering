@@ -119,12 +119,14 @@ def user_pre_move(self):
         self.warning('env variable acqConf/autoShutterPump not found!')
         auto_shutter_pump = False
 
-    if auto_shutter_pump:
-        self.execMacro('pump_off')
+#    if auto_shutter_pump:
+#        self.execMacro('pump_off')
 
-    #parent = self.getParentMacro()
-    #if parent:
-    #    self.output(parent._name)
+    parent = self.getParentMacro()
+    if parent:
+        self.output(parent._name)
+        for mot in parent.motors:
+            self.output(mot.name)
 
 
 @macro()
@@ -141,8 +143,8 @@ def user_post_move(self):
         self.warning('env variable acqConf/autoShutterPump not found!')
         auto_shutter_pump = False
 
-    if auto_shutter_pump:
-        self.execMacro('pump_on')
+#    if auto_shutter_pump:
+#        self.execMacro('pump_on')
 
 
 
