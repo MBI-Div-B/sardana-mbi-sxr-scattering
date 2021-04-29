@@ -1,5 +1,6 @@
 from sardana.macroserver.macro import Macro, macro, Type
 from time import sleep
+from tango import DeviceProxy
 
 @macro()
 def user_pre_acq(self):
@@ -111,6 +112,8 @@ def user_post_scan(self):
 def user_pre_move(self):
     """Macro user_pre_move"""
 
+    # self.info('In user pre move')
+
     acqConf  = self.getEnv('acqConf')
 
     try:
@@ -118,22 +121,33 @@ def user_pre_move(self):
     except:
         self.warning('env variable acqConf/autoShutterPump not found!')
         auto_shutter_pump = False
-
-#    if auto_shutter_pump:
-#        self.execMacro('pump_off')
-
-    parent = self.getParentMacro()
-    if parent:
-        self.output(parent._name)
-        for mot in parent.motors:
-            self.output(mot.name)
+    
+    if auto_shutter_pump:
+        parent = self.getParentMacro()
+        if parent:
+            # check if we need to close the shutter or not
+            close_pump_shutter = False
+            for mot in parent.motors:
+                self.output(mot)
+                if mot.name.lower().strip() in ['h', 'k', 'l', 'th', 'tth', 'q', 'thc']:
+                    close_pump_shutter = True
+            if close_pump_shutter:
+                # check if the pump shutter is open
+                proxy = DeviceProxy('laser/ThorlabsMFF100/pump')
+                mirror_state = proxy.mffstate
+                while mirror_state not in [0, 1]:
+                    sleep(0.1)
+                    mirror_state = proxy.mffstate
+                if mirror_state == 1:
+                    self.setEnv('autoClosePump', True)
+                    self.execMacro('pump_off')
 
 
 @macro()
 def user_post_move(self):
     """Macro user_post_move"""
 
-    #self.info('In user post move')
+    # self.info('In user post move')
 
     acqConf  = self.getEnv('acqConf')
 
@@ -143,8 +157,25 @@ def user_post_move(self):
         self.warning('env variable acqConf/autoShutterPump not found!')
         auto_shutter_pump = False
 
-#    if auto_shutter_pump:
-#        self.execMacro('pump_on')
-
-
+    if auto_shutter_pump:
+        parent = self.getParentMacro()
+        if parent:
+            if self.getEnv('autoClosePump'):
+                # shutter was automatically close in pre-move
+                # check if we really need to open the shutter or not
+                open_pump_shutter = False
+                for mot in parent.motors:
+                    if mot.name.lower().strip() in ['h', 'k', 'l', 'th', 'tth', 'q', 'thc']:
+                        open_pump_shutter = True
+                
+                if open_pump_shutter:
+                    # check if the pump shutter is closed
+                    proxy = DeviceProxy('laser/ThorlabsMFF100/pump')
+                    mirror_state = proxy.mffstate
+                    while mirror_state not in [0, 1]:
+                        sleep(0.1)
+                        mirror_state = proxy.mffstate
+                    if mirror_state == 0:
+                        self.setEnv('autoClosePump', False)
+                        self.execMacro('pump_on')
 
