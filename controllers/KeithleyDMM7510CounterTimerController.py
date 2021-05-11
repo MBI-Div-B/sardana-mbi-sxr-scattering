@@ -40,8 +40,7 @@ class KeithleyDMM7510CounterTimerController(CounterTimerController):
 
     def ReadOne(self, axis):
         """Get the specified counter value"""
-        res = float(self.axis_extra_pars[axis]['Proxy'].stats_average)
-        return res
+        return float(self.axis_extra_pars[axis]['Proxy'].stats_average)
 
     def StateOne(self, axis):
         status = self.axis_extra_pars[axis]['Proxy'].trigger_status
@@ -54,17 +53,14 @@ class KeithleyDMM7510CounterTimerController(CounterTimerController):
         
     def StartOne(self, axis, value=None):
         """acquire the specified counter"""
-        time.sleep(1.28)
-        self.axis_extra_pars[axis]['Proxy'].trigger_init()
-
-    def StartAll(self):
         pass
 
     def PrepareOne(self, axis, value, repetitions, latency_time, nb_starts):
         self.axis_extra_pars[axis]['Proxy'].trigger_external(int(value*100))
 
     def LoadOne(self, axis, value, repetitions, latency_time):
-        pass
+        self.axis_extra_pars[axis]['Proxy'].trigger_init()
+        #time.sleep(0.1)
 
     def StopOne(self, axis):
         """Stop the specified counter"""

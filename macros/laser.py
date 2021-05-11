@@ -238,5 +238,5 @@ def laser_scan_mode(self):
     self.execMacro('shutter_disable')
     self.execMacro('shutter_external')
     self.execMacro('probe_on')
-    sleep(0.4)
+    sleep(1)
     self.execMacro('shutter_enable')
