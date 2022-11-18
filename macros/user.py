@@ -20,12 +20,6 @@ def user_pre_acq(self):
         check_tape = False
 
     try:
-        check_target = acqConf['checkTarget']
-    except:
-        self.warning('env variable acqConf/checkTarget not found!')
-        check_target = False
-
-    try:
         check_cam_temp = acqConf['checkCamTemp']
     except:
         self.warning('env variable acqConf/checkCamTemp not found!')
@@ -33,9 +27,6 @@ def user_pre_acq(self):
 
     if check_tape:
         self.execMacro('tape_check')
-    
-    if check_target:
-        self.execMacro('target_check')
 
     if check_cam_temp:
         self.execMacro('mte_check')
@@ -54,17 +45,26 @@ def user_pre_scan(self):
         start_tape = acqConf['startTape']
     except:
         self.warning('env variable acqConf/startTape not found!')
-
     if start_tape:
         self.execMacro('tape_on')
+
+
+    try:
+        start_target = acqConf['startTarget']
+    except:
+        self.warning('env variable acqConf/startTarget not found!')
+    if start_tape:
+        self.execMacro('target_on')
+
+
 
     try:
         auto_mode_laser = acqConf['autoModeLaser']
     except:
         self.warning('env variable acqConf/autoModeLaser not found!')
-        
     if auto_mode_laser:
         self.execMacro('laser_scan_mode')
+
 
     self.execMacro('acqrep')
 
@@ -97,6 +97,16 @@ def user_post_scan(self):
 
     if stop_tape:
         self.execMacro('tape_off')
+
+
+    try:
+        stop_target = acqConf['stopTarget']
+    except:
+        self.warning('env variable acqConf/stopTarget not found!')
+        stop_target = False
+
+    if stop_target:
+        self.execMacro('target_off')
 
     try:
         auto_mode_laser = acqConf['autoModeLaser']

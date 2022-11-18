@@ -71,7 +71,7 @@ def probe_state(self):
 @macro()
 def pump_on(self):
     """Macro pump_on"""
-    proxy = DeviceProxy('laser/ThorlabsMFF100/pump')
+    proxy = DeviceProxy('rsxs/ThorlabsMFF100/pump')
     proxy.Open()
     self.output("Pump mirror open!")
 
@@ -79,7 +79,7 @@ def pump_on(self):
 @macro()
 def pump_off(self):
     """Macro pump_off"""
-    proxy = DeviceProxy('laser/ThorlabsMFF100/pump')
+    proxy = DeviceProxy('rsxs/ThorlabsMFF100/pump')
     proxy.Close()
     self.output("Pump mirror closed!")
 
@@ -87,8 +87,8 @@ def pump_off(self):
 @macro()
 def pump_state(self):
     """Macro pump_state"""
-    proxy = DeviceProxy('laser/ThorlabsMFF100/pump')
-    self.output(proxy.mffstate)
+    proxy = DeviceProxy('rsxs/ThorlabsMFF100/pump')
+    self.output(proxy.state())
 
 
 @macro()
@@ -197,12 +197,11 @@ def laser_sleep_mode(self):
     """
     self.execMacro('shutter_disable')
     self.execMacro('shutter_manual')
-    self.execMacro('pump_off')
     self.execMacro('probe_off')
     self.execMacro('laser_off')
     sleep(0.4)
     self.execMacro('shutter_enable')
-    self.output('Pump and probe are closed. Laser is seeded, but dumped inside the compressor housing.')
+    self.output('Probe is closed. Laser is seeded, but dumped inside the compressor housing.')
 
 @macro()
 def laser_ready_mode(self):

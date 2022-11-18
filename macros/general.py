@@ -7,10 +7,12 @@ import numpy as np
         ["checkCamTemp", Type.Boolean, Optional, "check cam temp"], 
         ["startTape", Type.Boolean, Optional, "start tape"],
         ["stopTape", Type.Boolean, Optional, "stop tape"],
+        ["startTarget", Type.Boolean, Optional, "start target"],
+        ["stopTarget", Type.Boolean, Optional, "stop target"],
         ["autoModeLaser", Type.Boolean, Optional, "auto mode laser"],
         ["autoShutterPump", Type.Boolean, Optional, "auto shutter pump"],
     ])
-def acqconf(self, checkTape, checkTarget, checkCamTemp, startTape, stopTape, autoModeLaser, autoShutterPump):
+def acqconf(self, checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, autoShutterPump):
     # run all the other configurations
     try:
         acqConf = self.getEnv('acqConf')
@@ -40,17 +42,30 @@ def acqconf(self, checkTape, checkTarget, checkCamTemp, startTape, stopTape, aut
     if startTape is None:
         startTape = self.input("Start tape before scan:", 
                              data_type=Type.Boolean,
-                             title="check cam temp", default_value=acqConf['startTape'])
-
-
+                             title="start tape", default_value=acqConf['startTape'])
     if stopTape is None:
         stopTape = self.input("Stop tape after scan:", 
                              data_type=Type.Boolean,
                              title="stop tape", default_value=acqConf['stopTape'])
 
-    
-    acqConf['startTape'] = startTape
-    acqConf['stopTape'] = stopTape
+
+
+    if startTarget is None:
+        startTarget = self.input("Start target before scan:", 
+                             data_type=Type.Boolean,
+                             title="start target", default_value=acqConf['startTarget'])
+
+
+    if stopTarget is None:
+        stopTarget = self.input("Stop target after scan:", 
+                             data_type=Type.Boolean,
+                             title="stop target", default_value=acqConf['stopTarget'])
+
+
+    acqConf['startTape']   = startTape
+    acqConf['stopTape']    = stopTape
+    acqConf['startTarget'] = startTarget
+    acqConf['stopTarget']  = stopTarget
 
     if autoModeLaser is None:
         autoModeLaser = self.input("Change laser mode automatically before/after scans:", 
@@ -63,28 +78,35 @@ def acqconf(self, checkTape, checkTarget, checkCamTemp, startTape, stopTape, aut
                              data_type=Type.Boolean,
                              title="auto shutter pump", default_value=acqConf['autoShutterPump'])
 
-    
-    acqConf['autoShutterPump'] = autoShutterPump
-    acqConf['autoModeLaser'] = autoModeLaser
 
-    self.setEnv('acqConf', acqConf)    
+    #acqConf['autoShutterPump'] = autoShutterPump
+    #acqConf['autoModeLaser'] = autoModeLaser
+
+    self.setEnv('acqConf', acqConf)
+
     self.execMacro('waittime')
-    self.execMacro('powerconf')    
-    self.execMacro('fluenceconf')
-    self.output('\r')
-    self.execMacro('acqrep')
+    
+    self.output('PUMP FUNCTIONALITY COMPLETELY DISABLED!!!')
+
+    #self.execMacro('powerconf')    
+    #self.execMacro('fluenceconf')
+    #self.output('\r')
+    #self.execMacro('acqrep')
+
 
 
 @macro()
 def acqrep(self):
     acqConf = self.getEnv('acqConf')
-    self.output('Gen. Settings:\nWaittime = %.2f s | check tape: %r | check target: %r | check cam temp: %r\nstart tape: %r | stop tape: %r | auto mode laser: %r | auto shutter pump: %r',
+    self.output('Gen. Settings:\nWaittime = %.2f s | check tape: %r | check target: %r | check cam temp: %r\nstart tape: %r | stop tape: %r |start target: %r | stop target: %r\nauto mode laser: %r | auto shutter pump: %r',
                 acqConf['waitTime'],
                 acqConf['checkTape'],
                 acqConf['checkTarget'],
                 acqConf['checkCamTemp'], 
                 acqConf['startTape'],
                 acqConf['stopTape'],
+                acqConf['startTarget'],
+                acqConf['stopTarget'],
                 acqConf['autoModeLaser'],
                 acqConf['autoShutterPump'])
     self.execMacro('powerrep')
@@ -253,7 +275,7 @@ def init_sardana(self):
 
 
 @macro()
-def wroi(self):
+def roirep(self):
     """Macro to print the Rois"""
     self.execMacro('genv', 'DetectorROIs')
 

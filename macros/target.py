@@ -55,11 +55,12 @@ def tape_check(self):
             sleep(0.5)
             self.output("Tape is ON!")
 
+
 @imacro()
 def target_check(self):
     """Macro target_check"""
     proxy = DeviceProxy('xpl/faulhaberdcmotor/rsxs')
-    if proxy.speed > 100:
+    if proxy.speed > 50:
         # all fine
         pass
     else:
@@ -80,15 +81,17 @@ def target_check(self):
 @macro()
 def target_on(self):
     """Macro target_on"""
+    proxy = DeviceProxy('xpl/target/rotation')
+    proxy.jog_plus()
     self.output("Running target_on...")
-    self.execMacro('umv target_rot 200')
 
 
 @macro()
 def target_off(self):
     """Macro target_off"""
+    proxy = DeviceProxy('xpl/target/rotation')
+    proxy.stop()
     self.output("Running target_off...")
-    self.execMacro('umv target_rot 0')
 
 
 @macro()
@@ -105,4 +108,10 @@ def watchdog_off(self):
     self.output("Running watchdog_off...")
     proxy = DeviceProxy('rsxs/watchdog/1')
     proxy.stop()
+
+
+@macro()
+def new_line(self):
+    """Macro to translate the target to a new line."""
+    self.execMacro('umvr','target_trans','0.1')
 

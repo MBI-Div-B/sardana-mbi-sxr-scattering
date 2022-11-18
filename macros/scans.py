@@ -1,6 +1,8 @@
 from sardana.macroserver.macro import Macro, macro, Type
 import os
 from dirsync import sync
+import tango
+import time
 
 
 @macro([["integ_time", Type.Float, 0.05, "integration time in [s]"]])
@@ -64,8 +66,6 @@ def sync_data(self):
 def snap(self, integ_time):
     """Macro snap (ct wrapper)"""
     self.execMacro('user_pre_scan')
+    self.execMacro('user_pre_acq')
     self.execMacro('ct', '{:0.3f}'.format(integ_time))
     self.execMacro('user_post_scan')
-    
-
-
