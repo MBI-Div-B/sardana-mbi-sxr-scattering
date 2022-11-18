@@ -1,1 +1,4 @@
 *__pycache__*
+.vscode
+macroserver.properties
+macros/training.py

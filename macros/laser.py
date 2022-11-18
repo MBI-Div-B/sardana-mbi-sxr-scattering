@@ -14,7 +14,7 @@ from time import sleep
 @macro()
 def laser_on(self):
     """Macro laser_on"""
-    is_enabled = DeviceProxy('laser/ThorlabsSC10/seed').enabled 
+    is_enabled = DeviceProxy('laser/ThorlabsSC10/seed').enabled
     if is_enabled:
         self.warning('The seed shutter is still enabled! Can not flip mirror!')
         return
@@ -22,10 +22,11 @@ def laser_on(self):
     proxy.Open()
     self.output("Laser mirror opened!")
 
+
 @macro()
 def laser_off(self):
     """Macro laser_off"""
-    is_enabled = DeviceProxy('laser/ThorlabsSC10/seed').enabled 
+    is_enabled = DeviceProxy('laser/ThorlabsSC10/seed').enabled
     if is_enabled:
         self.warning('The seed shutter is still enabled! Can not flip mirror!')
         return
@@ -33,16 +34,18 @@ def laser_off(self):
     proxy.Close()
     self.output("Laser mirror closed!")
 
+
 @macro()
 def laser_state(self):
     """Macro laser_state"""
     proxy = DeviceProxy('laser/ThorlabsMFF100/compressor')
     self.output(proxy.mffstate)
 
+
 @macro()
 def probe_on(self):
     """Macro laser_on"""
-    is_enabled = DeviceProxy('laser/ThorlabsSC10/seed').enabled 
+    is_enabled = DeviceProxy('laser/ThorlabsSC10/seed').enabled
     if is_enabled:
         self.warning('The seed shutter is still enabled! Can not flip mirror!')
         return
@@ -50,16 +53,18 @@ def probe_on(self):
     proxy.Open()
     self.output("Probe mirror open!")
 
+
 @macro()
 def probe_off(self):
     """Macro laser_off"""
-    is_enabled = DeviceProxy('laser/ThorlabsSC10/seed').enabled 
+    is_enabled = DeviceProxy('laser/ThorlabsSC10/seed').enabled
     if is_enabled:
         self.warning('The seed shutter is still enabled! Can not flip mirror!')
         return
     proxy = DeviceProxy('laser/ThorlabsMFF100/probe')
     proxy.Close()
     self.output("Probe mirror closed!")
+
 
 @macro()
 def probe_state(self):
@@ -142,22 +147,24 @@ def shutter_is_enabled(self, output):
         self.output(is_enabled)
     return is_enabled
 
+
 @imacro()
 def laser_aligment_mode(self):
     """
     Macro to align the laser.
     If aborted by answering 'n', the laser will enter sleep mode for safety.
     If answered by 'y', the option is given to open the probe beam shutter.
-    
+
     To abort                     answer:  n
     To align only the probe beam answer:  y => y
     To align only the probe beam answer:  y => n    
-    
+
     """
 
     answer = ''
     while answer not in ['y', 'n']:
-        answer = self.input("Are you sure you want the full beam on the laser table? (n)?")
+        answer = self.input(
+            "Are you sure you want the full beam on the laser table? (n)?")
     if answer == 'n':
         self.output('Macro accidentally called. Entering sleep mode.')
         self.execMacro('laser_sleep_mode')
@@ -166,7 +173,8 @@ def laser_aligment_mode(self):
         answer = ''
         while answer not in ['y', 'n']:
             self.output("The pump shutter was closed.")
-            answer = self.input("Do you want the full probe beam on the target (n)?")
+            answer = self.input(
+                "Do you want the full probe beam on the target (n)?")
         self.execMacro('shutter_disable')
         if answer == 'n':
             self.execMacro('probe_off')
@@ -201,7 +209,9 @@ def laser_sleep_mode(self):
     self.execMacro('laser_off')
     sleep(0.4)
     self.execMacro('shutter_enable')
-    self.output('Probe is closed. Laser is seeded, but dumped inside the compressor housing.')
+    self.output(
+        'Probe is closed. Laser is seeded, but dumped inside the compressor housing.')
+
 
 @macro()
 def laser_ready_mode(self):
@@ -226,7 +236,7 @@ def laser_scan_mode(self):
     """
     Macro laser_scan_mode.
     Usually only executed by a pre scan hook.
-        
+
     The probe flip mount will be opened.
     The seed is closed and waiting for an external trigger.    
 

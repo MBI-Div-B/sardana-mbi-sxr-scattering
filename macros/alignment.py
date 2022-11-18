@@ -1,16 +1,19 @@
 from sardana.macroserver.macro import Macro, macro, Type
 
+
 @macro()
 def slit_out_completely(self):
     """Macro slit_out"""
     self.output("Moving slit out horizontally towards door...")
     self.execMacro('umv', 'slit_hor', '41.3')
 
+
 @macro()
 def slit_out(self):
     """Macro slit_out"""
     self.output("Moving slit out horizontally towards door...")
     self.execMacro('umv', 'slit_hor', '26')
+
 
 @macro()
 def slit_in(self):
@@ -26,14 +29,15 @@ def ccd_out(self):
     self.execMacro('umv', 'ccd_height', '-25', 'tth', '-25')
     #
 
+
 @macro()
 def ccd_in(self):
     """Macro ccd_out"""
     self.output("Moving ccd in horizontally towards window and up...")
     self.execMacro('umv', 'ccd_height', '0', 'tth', '-0')
-    
+
     #device = self.getDevice("controller/pilccountertimercontroller/pilctimerctrl")
-    #print(device.getTriggerMode())
+    # print(device.getTriggerMode())
 
 
 @macro()
@@ -42,13 +46,12 @@ def pol_out(self):
     self.output("Moving polariser out horizontally towards door...")
     self.execMacro('umv', 'slit_hor', '25')
 
+
 @macro()
 def pol_in(self):
     """Macro pol_out"""
     self.output("Moving polariser in horizontally towards window...")
     self.execMacro('umv', 'slit_hor', '6.15')
-
-
 
 
 @macro()
@@ -61,7 +64,6 @@ def go_to_pump_diode(self):
     self.execMacro('umv', 'ccd_height', '-25.3')
 
 
-
 @macro()
 def go_to_pinhole(self):
     """Macro go_to_pinhole"""
@@ -70,7 +72,3 @@ def go_to_pinhole(self):
     self.output("Going to pinhole...")
     self.execMacro('umv', 'zs', '-10')
     self.execMacro('umv', 'th', '90')
-
-
-
-
