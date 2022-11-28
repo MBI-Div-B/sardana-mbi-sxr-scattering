@@ -12,8 +12,9 @@ import numpy as np
         ["stopTarget", Type.Boolean, Optional, "stop target"],
         ["autoModeLaser", Type.Boolean, Optional, "auto mode laser"],
         ["autoShutterPump", Type.Boolean, Optional, "auto shutter pump"],
+        ["waitTime", Type.Float, Optional, "wait time"],
          ])
-def acqconf(self, checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, autoShutterPump):
+def acqconf(self, checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, autoShutterPump, waitTime):
     # run all the other configurations
     try:
         acqConf = self.getEnv('acqConf')
@@ -73,12 +74,12 @@ def acqconf(self, checkTape, checkTarget, checkCamTemp, startTape, stopTape, sta
                                      data_type=Type.Boolean,
                                      title="auto shutter pump", default_value=acqConf['autoShutterPump'])
 
-    #acqConf['autoShutterPump'] = autoShutterPump
-    #acqConf['autoModeLaser'] = autoModeLaser
+    acqConf['autoShutterPump'] = autoShutterPump
+    acqConf['autoModeLaser'] = autoModeLaser
 
     self.setEnv('acqConf', acqConf)
 
-    self.execMacro('waittime')
+    self.execMacro('waittime', waitTime)
 
     self.output('PUMP FUNCTIONALITY COMPLETELY DISABLED!!!')
 
