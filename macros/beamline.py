@@ -136,15 +136,18 @@ def end_of_the_day(self):
 @macro()
 def switch_to_mte(self):
     self.output("switching to mte ccd detector...")
-    self.output("driving ccd in")
-    self.execMacro("ccd_in")
+    #self.output("driving ccd in")
+    # self.execMacro("ccd_in")
     self.output("switching measurement group to pilc_mte")
     self.execMacro("set_meas", "pilcmte")
     self.output("switching PiLCTimerCtrl.TriggerMode to 2")
     pilc = self.getController("PiLCTimerCtrl")
-    pilc.TriggerMode = 2
+    pilc.write_attribute("triggermode", 2)
+    self.output(f"triggermode = %d" %
+                pilc.read_attribute("triggermode").value)
     self.output("exporting acqconf to check mte CamTemp")
     # args are boolean: checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, autoShutterPump
+    self.execMacro("pressure_check")
     self.execMacro("acqconf", 1, 1, 1, 1, 1, 1, 1, 1, 0)
     self.execMacro("mte_temp_set", -40)
     self.output(
@@ -154,16 +157,39 @@ def switch_to_mte(self):
 @macro()
 def switch_to_moench(self):
     self.output("switching to moench cmos detector...")
-    self.output("driving ccd out")
-    self.execMacro("ccd_out")
+    #self.output("driving ccd out")
+    # self.execMacro("ccd_out")
     self.output("switching measurement group to moench_mgmt")
     self.execMacro("set_meas", "moench_mgmt")
     self.output("switching PiLCTimerCtrl.TriggerMode to 1")
     pilc = self.getController("PiLCTimerCtrl")
-    pilc.TriggerMode = 1
+    pilc.write_attribute("triggermode", 1)
+    self.output(f"triggermode = %d" %
+                pilc.read_attribute("triggermode").value)
+    # pilc.read_attribute("triggermode").value
     self.output("exporting acqconf to ignore mte CamTemp")
     # args are boolean: checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, autoShutterPump
-    self.execMacro("acqconf", 1, 1, 0, 1, 1, 1, 1, 1, 0)
+    self.execMacro("acqconf", 1, 1, 0, 1, 1, 1, 1, 1, 0, 0)
     self.output(
         "don't forget to switch\nLaVue Tango Events -> Attributes to rsxs moench"
     )
+
+
+@macro()
+def switch_to_diode(self):
+    self.output("switching to keithley voltmeter...")
+    #self.output("driving ccd out")
+    # self.execMacro("ccd_out")
+    self.output("switching measurement group to laser_diode_mgmt")
+    self.execMacro("set_meas", "laser_diode_mgmt")
+    self.output("switching PiLCTimerCtrl.TriggerMode to 1")
+    pilc = self.getController("PiLCTimerCtrl")
+    pilc.write_attribute("triggermode", 1)
+    self.output(f"triggermode = %d" %
+                pilc.read_attribute("triggermode").value)
+    self.output("exporting acqconf to ignore mte CamTemp")
+    # args are boolean: checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, autoShutterPump
+    self.execMacro("acqconf", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    # self.output(
+    #   "don't forget to switch\nLaVue Tango Events -> Attributes to rsxs moench"
+    # )
