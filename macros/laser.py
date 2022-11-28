@@ -77,7 +77,7 @@ def probe_state(self):
 def pump_on(self):
     """Macro pump_on"""
     proxy = DeviceProxy('rsxs/ThorlabsMFF100/pump')
-    proxy.Open()
+    proxy.Close()  # since the flipmount is inverted
     self.output("Pump mirror open!")
 
 
@@ -85,7 +85,7 @@ def pump_on(self):
 def pump_off(self):
     """Macro pump_off"""
     proxy = DeviceProxy('rsxs/ThorlabsMFF100/pump')
-    proxy.Close()
+    proxy.Open()  # since the flipmount is inverted
     self.output("Pump mirror closed!")
 
 
