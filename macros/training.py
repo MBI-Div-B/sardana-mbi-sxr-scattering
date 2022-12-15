@@ -1,4 +1,5 @@
 from sardana.macroserver.macro import Macro, macro, Type
+import time
 
 
 @macro()
@@ -8,6 +9,6 @@ def where_is_gap(self):
 
 @macro()
 def test_counter_value(self):
-    self.output(
-        "don't forget to switch\nLaVue Tango Events -> Attributes to rsxs moench"
-    )
+    pilc = self.getController("PiLCTimerCtrl")
+    pilc.write_attribute("triggermode", 1)
+    self.output(pilc.read_attribute("triggermode").value)
