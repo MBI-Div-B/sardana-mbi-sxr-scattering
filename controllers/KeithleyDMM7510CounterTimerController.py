@@ -4,6 +4,7 @@ from sardana import State, DataAccess
 from sardana.pool.controller import Type, Access, Description
 from sardana.pool.controller import CounterTimerController
 
+
 class KeithleyDMM7510CounterTimerController(CounterTimerController):
     """The most basic controller intended from demonstration purposes only.
     This is the absolute minimum you have to implement to set a proper counter
@@ -14,12 +15,12 @@ class KeithleyDMM7510CounterTimerController(CounterTimerController):
     documentation"""
 
     MaxDevice = 99
-    
+
     axis_attributes = {
         'Tango_Device': {
             Type: str,
-            Description: 'The Tango Device'\
-                ' (e.g. domain/family/member)',
+            Description: 'The Tango Device'
+            ' (e.g. domain/family/member)',
             Access: DataAccess.ReadWrite
         },
     }
@@ -50,7 +51,7 @@ class KeithleyDMM7510CounterTimerController(CounterTimerController):
             return State.Moving, "Counter is running"
         else:
             return State.Fault, "Something is wrong"
-        
+
     def StartOne(self, axis, value=None):
         """acquire the specified counter"""
         pass
@@ -60,7 +61,6 @@ class KeithleyDMM7510CounterTimerController(CounterTimerController):
 
     def LoadOne(self, axis, value, repetitions, latency_time):
         self.axis_extra_pars[axis]['Proxy'].trigger_init()
-        #time.sleep(0.1)
 
     def StopOne(self, axis):
         """Stop the specified counter"""
@@ -72,13 +72,14 @@ class KeithleyDMM7510CounterTimerController(CounterTimerController):
 
     def GetAxisExtraPar(self, axis, name):
         return self.axis_extra_pars[axis][name]
-    
+
     def SetAxisExtraPar(self, axis, name, value):
         if name == 'Tango_Device':
             self.axis_extra_pars[axis][name] = value
             try:
                 self.axis_extra_pars[axis]['Proxy'] = DeviceProxy(value)
-                self._log.info('axis {:d} DeviceProxy set to: {:s}'.format(axis, value))
+                self._log.info(
+                    'axis {:d} DeviceProxy set to: {:s}'.format(axis, value))
             except Exception as e:
                 self.axis_extra_pars[axis]['Proxy'] = None
                 raise e
