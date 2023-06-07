@@ -4,6 +4,7 @@ from tango import DeviceProxy
 
 from dirsync import sync
 import os
+import subprocess
 
 
 @macro()
@@ -125,21 +126,23 @@ def user_post_scan(self):
 
 @macro()
 def user_post_scan_sync(self):
-
-    """ not ready to use yet!!"""
-    import os
-    import subprocess
+    scanDir = self.getEnv("ScanDir")
 
     #    sync_cmd = ["sshpass", "-p", "'cV4mBBpS2StpqBP'", "rsync", "-r", "-t", "-g", "-v", "--progress", "-s", "/home/labuser/data", "data_ampere@nasbsxr.sxr.lab:/share/Data/ampere.sxr.lab/RSXS"]
-    result = subprocess.run(
-        'sshpass -p \'cV4mBBpS2StpqBP\' rsync -r -t -g -v --progress -s --include="*_[0-9][0-9][0-9][0-9].h5" --exclude="*.h5" /home/labuser/data data_ampere@nasbsxr.sxr.lab:/share/Data/ampere.sxr.lab/RSXS',
-        shell=True,
-        stdout=subprocess.PIPE,
-    )
-    self.output(result.stdout.decode("utf-8"))
+
+    if scanDir is not "" and scanDir is not None:
+        self.output("Mirroring on NAS initiated...")
+        result = subprocess.run(
+            f'rsync -r -t -g -v --progress -s --include="*_[0-9][0-9][0-9][0-9].h5" --exclude="*.h5" {scanDir} data_ampere@nasbsxr.sxr.lab:/share/Data/ampere.sxr.lab/RSXS/data',
+            shell=True,
+            stdout=subprocess.PIPE,
+        )
+        self.output(result.stdout.decode("utf-8"))
+        self.output("End of mirroring.")
+    else:
+        self.output("ScanDir is not set, please check the save path.")
 
 
-#    os.system("sshpass -p 'cV4mBBpS2StpqBP' rsync -r -t -g -v --progress -s /home/labuser/data data_ampere@nasbsxr.sxr.lab:/share/Data/ampere.sxr.lab/RSXS")
 #    ScanDir = self.getEnv('ScanDir')
 #    RemoteScanDir = self.getEnv('RemoteScanDir')
 #
