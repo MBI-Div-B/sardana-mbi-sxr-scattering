@@ -10,13 +10,16 @@ import subprocess
 @macro()
 def user_pre_acq(self):
     """Macro user_pre_acq"""
-
     acqConf = self.getEnv("acqConf")
+
     try:
         waittime = acqConf["waitTime"]
     except:
         self.warning("env variable acqConf/waitTime not found!")
         waittime = 0
+    if waittime > 0:
+        sleep(waittime)
+        self.debug("waiting for %.2f s", waittime)
 
     try:
         check_tape = acqConf["checkTape"]
@@ -24,21 +27,24 @@ def user_pre_acq(self):
         self.warning("env variable acqConf/checkTape not found!")
         check_tape = False
 
-    try:
-        check_cam_temp = acqConf["checkCamTemp"]
-    except:
-        self.warning("env variable acqConf/checkCamTemp not found!")
-        check_cam_temp = False
-
     if check_tape:
         self.execMacro("tape_check")
 
-    if check_cam_temp:
-        self.execMacro("mte_check")
+    try:
+        check_ccd_temp = acqConf["checkCCDTemp"]
+    except:
+        self.warning("env variable acqConf/checkCCDTemp not found!")
+        check_ccd_temp = False
+    if check_ccd_temp:
+        self.execMacro("ccd_check")
 
-    if waittime > 0:
-        sleep(waittime)
-        self.debug("waiting for %.2f s", waittime)
+    try:
+        check_mte_temp = acqConf["checkMTETemp"]
+    except:
+        self.warning("env variable acqConf/checkMTETemp not found!")
+        check_mte_temp = False
+    if check_mte_temp:
+        self.execMacro("mte_check")
 
 
 @macro()

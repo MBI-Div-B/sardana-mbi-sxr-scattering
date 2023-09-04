@@ -26,17 +26,17 @@ for the Sardana Device Pool"""
 
 __all__ = ["Diff"]
 
-__docformat__ = 'restructuredtext'
+__docformat__ = "restructuredtext"
 
 from sardana.pool.controller import PseudoCounterController
 
 
 class DiffPseudoCounterController(PseudoCounterController):
-    """ A simple pseudo counter which receives two counter values (I1 and I2)
-        and returns I1-I2"""
+    """A simple pseudo counter which receives two counter values (I1 and I2)
+    and returns I1-I2"""
 
     counter_roles = "I1", "I2"
-    pseudo_counter_roles = "diff",
+    pseudo_counter_roles = ("diff",)
 
     def Calc(self, axis, counter_values):
         i1, i2 = counter_values

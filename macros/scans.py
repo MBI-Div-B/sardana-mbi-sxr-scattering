@@ -68,7 +68,7 @@ def sync_data(self):
         )
 
 
-@macro([["integ_time", Type.Float, 0.05, "integration time in [s]"]])
+@macro([["integ_time", Type.Float, 0.01, "integration time in [s]"]])
 def snap(self, integ_time):
     """Macro snap (ct wrapper)"""
     self.execMacro("user_pre_scan")
@@ -77,7 +77,7 @@ def snap(self, integ_time):
     self.execMacro("user_post_scan")
 
 
-@macro([["integ_time", Type.Float, 0.05, "integration time in [s]"]])
+@macro([["integ_time", Type.Float, 0.01, "integration time in [s]"]])
 def dark_image_pump(self, integ_time):
     """Macro to acquire a dark image with the pump on"""
     acqConf = self.getEnv("acqConf")

@@ -1,0 +1,1 @@
+/home/labuser/Sardana/controller-repos/sardana-laVuePseudoCounterController/laVuePseudoCounterController.py

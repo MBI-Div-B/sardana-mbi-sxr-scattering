@@ -21,7 +21,7 @@ def pressure_check(self):
     except:
         pressure_rzp = 9999.0
     try:
-        pressure_xpl = tango.DeviceProxy("xpl/TPG26X/target").pressure
+        pressure_xpl = tango.DeviceProxy("sxr/TPG26X/pxs").pressure
     except:
         pressure_xpl = 9999.0
 
@@ -120,7 +120,12 @@ def end_of_the_day(self):
     try:
         self.execMacro("mte_temp_set", 19)
     except:
-        self.output("Could not contact CCD to heat to 19 degrees C")
+        self.warning("Could not contact MTE to heat to 19 degrees C")
+
+    try:
+        self.execMacro("ccd_temp_set", 19)
+    except:
+        self.warning("Could not contact CCD to heat to 19 degrees C")
 
     #    self.output(pressure_xpl)
     #    self.output(pressure_rzp)
@@ -146,12 +151,32 @@ def switch_to_mte(self):
     pilc = self.getController("PiLCTimerCtrl")
     pilc.write_attribute("triggermode", 2)
     self.output(f"triggermode = %d" % pilc.read_attribute("triggermode").value)
+
     self.output("exporting acqconf to check mte CamTemp")
-    # args are boolean: checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, darkModeLaser, autoShutterPump
+    # args are boolean: checkTape, checkTarget, checkMTETemp, checkCCDTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, darkModeLaser, autoShutterPump, waittime
     self.execMacro("pressure_check")
-    self.execMacro("acqconf", 1, 1, 1, 1, 1, 1, 1, 1, 0, 0)
-    self.execMacro("mte_temp_set", -40)
+    self.execMacro("acqconf", 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0)
+    self.execMacro("ccd_temp_set", -40)
     self.output("don't forget to switch\nLaVue Tango Events -> Attributes to rsxs mte")
+
+
+@macro()
+def switch_to_lotte(self):
+    self.output("switching to greateyes lotte detector...")
+    self.output("switching measurement group to lotte_mgmt")
+    self.execMacro("set_meas", "lotte_mgmt")
+    self.output("switching PiLCTimerCtrl.TriggerMode to 3")
+    pilc = self.getController("PiLCTimerCtrl")
+    pilc.write_attribute("triggermode", 3)
+    self.output(f"triggermode = %d" % pilc.read_attribute("triggermode").value)
+    self.output("exporting acqconf to check CamTemp")
+    # args are boolean: checkTape, checkTarget, checkMTETemp, checkCCDTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, darkModeLaser, autoShutterPump, waittime
+    self.execMacro("pressure_check")
+    self.execMacro("acqconf", 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0)
+    self.execMacro("ccd_temp_set", -35)
+    self.output(
+        "don't forget to switch\nLaVue Tango Attribute 'sxr/greateyesccd/lotte/images' "
+    )
 
 
 @macro()
@@ -169,7 +194,7 @@ def switch_to_moench_laser(self):
     # pilc.read_attribute("triggermode").value
     self.output("exporting acqconf to ignore mte CamTemp")
     # args are boolean: checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, darkModeLaser, autoShutterPump
-    self.execMacro("acqconf", 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0)
+    self.execMacro("acqconf", 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0)
     self.output(
         "don't forget to switch\nLaVue Tango Events -> Attributes to rsxs moench"
     )
@@ -177,6 +202,7 @@ def switch_to_moench_laser(self):
 
 @macro()
 def switch_to_moench_chopper(self):
+    self.output("GET TO THE CHOPPER")
     self.output("switching to moench hybrid detector...")
     self.output("using chopper as a trigger")
     # self.output("driving ccd out")
@@ -190,10 +216,11 @@ def switch_to_moench_chopper(self):
     # pilc.read_attribute("triggermode").value
     self.output("exporting acqconf to ignore mte CamTemp")
     # args are boolean: checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, darkModeLaser, autoShutterPump
-    self.execMacro("acqconf", 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0)
+    self.execMacro("acqconf", 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0)
     self.output(
         "don't forget to switch\nLaVue Tango Events -> Attributes to rsxs moench"
     )
+    self.output("DO NOT FORGET TO SWITCH ON THE CHOPPER")
 
 
 @macro()
@@ -206,7 +233,7 @@ def switch_to_top_diode(self):
     self.output(f"triggermode = %d" % pilc.read_attribute("triggermode").value)
     self.output("exporting acqconf to ignore mte CamTemp")
     # args are boolean: checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, darkModeLaser, autoShutterPump
-    self.execMacro("acqconf", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    self.execMacro("acqconf", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     # self.output(
     #   "don't forget to switch\nLaVue Tango Events -> Attributes to rsxs moench"
     # )
@@ -222,7 +249,7 @@ def switch_to_bottom_diode(self):
     self.output(f"triggermode = %d" % pilc.read_attribute("triggermode").value)
     self.output("exporting acqconf to ignore mte CamTemp")
     # args are boolean: checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, darkModeLaser, autoShutterPump
-    self.execMacro("acqconf", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    self.execMacro("acqconf", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     # self.output(
     #   "don't forget to switch\nLaVue Tango Events -> Attributes to rsxs moench"
     # )
@@ -241,7 +268,7 @@ def switch_to_diode(self):
     self.output(f"triggermode = %d" % pilc.read_attribute("triggermode").value)
     self.output("exporting acqconf to ignore mte CamTemp")
     # args are boolean: checkTape, checkTarget, checkCamTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, darkModeLaser, autoShutterPump
-    self.execMacro("acqconf", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    self.execMacro("acqconf", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     # self.output(
     #   "don't forget to switch\nLaVue Tango Events -> Attributes to rsxs moench"
     # )

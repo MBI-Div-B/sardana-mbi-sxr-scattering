@@ -7,7 +7,8 @@ import numpy as np
     [
         ["checkTape", Type.Boolean, Optional, "check tape"],
         ["checkTarget", Type.Boolean, Optional, "check target"],
-        ["checkCamTemp", Type.Boolean, Optional, "check cam temp"],
+        ["checkMTETemp", Type.Boolean, Optional, "check MTE temp"],
+        ["checkCCDTemp", Type.Boolean, Optional, "check CCD temp"],
         ["startTape", Type.Boolean, Optional, "start tape"],
         ["stopTape", Type.Boolean, Optional, "stop tape"],
         ["startTarget", Type.Boolean, Optional, "start target"],
@@ -22,7 +23,8 @@ def acqconf(
     self,
     checkTape,
     checkTarget,
-    checkCamTemp,
+    checkMTETemp,
+    checkCCDTemp,
     startTape,
     stopTape,
     startTarget,
@@ -54,17 +56,26 @@ def acqconf(
             default_value=acqConf["checkTarget"],
         )
 
-    if checkCamTemp is None:
-        checkCamTemp = self.input(
-            "Check cam temp before acquisition:",
+    if checkMTETemp is None:
+        checkMTETemp = self.input(
+            "Check MTE temp before acquisition:",
             data_type=Type.Boolean,
-            title="check cam temp",
-            default_value=acqConf["checkCamTemp"],
+            title="check MTE temp",
+            default_value=acqConf["checkMTETemp"],
+        )
+
+    if checkCCDTemp is None:
+        checkCCDTemp = self.input(
+            "Check CCD temp before acquisition:",
+            data_type=Type.Boolean,
+            title="check CCD temp",
+            default_value=acqConf["checkCCDTemp"],
         )
 
     acqConf["checkTape"] = checkTape
     acqConf["checkTarget"] = checkTarget
-    acqConf["checkCamTemp"] = checkCamTemp
+    acqConf["checkMTETemp"] = checkMTETemp
+    acqConf["checkCCDTemp"] = checkCCDTemp
 
     if startTape is None:
         startTape = self.input(
@@ -144,11 +155,12 @@ def acqconf(
 def acqrep(self):
     acqConf = self.getEnv("acqConf")
     self.output(
-        "Gen. Settings:\nWaittime = %.2f s | check tape: %r | check target: %r | check cam temp: %r\nstart tape: %r | stop tape: %r |start target: %r | stop target: %r\nauto mode laser: %r | dark mode laser: %r | auto shutter pump: %r",
+        "Gen. Settings:\nWaittime = %.2f s | check tape: %r | check target: %r | check MTE temp: %r | check CCD temp: %r\nstart tape: %r | stop tape: %r |start target: %r | stop target: %r\nauto mode laser: %r | dark mode laser: %r | auto shutter pump: %r",
         acqConf["waitTime"],
         acqConf["checkTape"],
         acqConf["checkTarget"],
-        acqConf["checkCamTemp"],
+        acqConf["checkMTETemp"],
+        acqConf["checkCCDTemp"],
         acqConf["startTape"],
         acqConf["stopTape"],
         acqConf["startTarget"],
@@ -408,3 +420,9 @@ def init_sardana(self):
 def roirep(self):
     """Macro to print the Rois"""
     self.execMacro("genv", "DetectorROIs")
+
+
+@macro()
+def acqRep(self):
+    """Macro acqRep"""
+    self.output("Running acqRep...")
