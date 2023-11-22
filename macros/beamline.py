@@ -59,9 +59,11 @@ def start_of_the_day(self):
     self.execMacro("laser_sleep_mode")
 
     pressures_low_enough = self.execMacro("pressure_check").getResult()
-
-    self.execMacro("acqconf", 1, 1, 1, 1, 1, 1, 1, 1, 0)
-
+    # how it is done in switch to moench_laser, activvating the probe shutter
+    # self.execMacro("acqconf", 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0)
+    # was previously, not activating the last probe shutter
+    # self.execMacro("acqconf", 1, 1, 1, 1, 1, 1, 1, 1, 0)
+    self.execMacro("acqconf", 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0)
     if pressures_low_enough:
         self.output("The pressures are low enough. Are all valves open?")
         answer = ""

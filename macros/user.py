@@ -139,7 +139,7 @@ def user_post_scan_sync(self):
     if scanDir is not "" and scanDir is not None:
         self.output("Mirroring on NAS initiated...")
         result = subprocess.run(
-            f'rsync -r -t -g -v --progress -s --include="*_[0-9][0-9][0-9][0-9].h5" --exclude="*.h5" {scanDir} data_ampere@nasbsxr.sxr.lab:/share/Data/ampere.sxr.lab/RSXS/data',
+            f'rsync -r -t -g -v --progress -s --include="*_[0-9][0-9][0-9][0-9].h5" --exclude="*.h5" {scanDir} data_ampere@nasbsxr.sxr.lab:/share/Data/henry.sxr.lab/RSXS/data',
             shell=True,
             stdout=subprocess.PIPE,
         )
