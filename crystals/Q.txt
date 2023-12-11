@@ -1,16 +1,16 @@
-Created at 2020-12-14 19:34
+Created at 2023-12-06 13:13
 
 DiffractometerType E4CV
 
 Crystal    Q
 
-Wavelength 1.54
+Wavelength 17.71203428571429
 
 A 20.0 B 20.0 C 20.0
 Alpha 90.0 Beta 90.0 Gamma 90.0
 
 R0 0 0.0 0.0 1.0 0 1 4.99997759 0.0 0.0 10.00003125
-R1 1 1.0 0.0 1.0 0 1 7.000068693 0.0 0.0 10.00003125
+R1 1 1.0 0.0 1.0 0 1 6.000023437546915 -3.2886164620892395e-40 3.691918060673663e-05 6.0
 
 Engine hkl
 
@@ -21,9 +21,9 @@ PsiRef not available in current engine mode
 AutoEnergyUpdate 1
 
 U00 0.314 U01 -0.000 U02 -0.000 
-U10 0.000 U11 0.314 U12 0.000 
+U10 -0.000 U11 0.314 U12 0.000 
 U20 0.000 U21 -0.000 U22 0.314 
 
-Ux -3.5083546492682107e-15 Uy -3.803499996896402e-05 Uz -2.328972048378415e-21
+Ux -3.5083546492682115e-15 Uy -3.8034999972159705e-05 Uz -2.328972048574095e-21
 
-SaveDirectory /home/labuser/Sardana/experiments/RSXS/crystals/
+SaveDirectory /home/labuser/crystals/

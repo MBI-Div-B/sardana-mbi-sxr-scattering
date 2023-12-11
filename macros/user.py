@@ -63,7 +63,7 @@ def user_pre_scan(self):
         start_target = acqConf["startTarget"]
     except:
         self.warning("env variable acqConf/startTarget not found!")
-    if start_tape:
+    if start_target:
         self.execMacro("target_on")
 
     try:
@@ -80,7 +80,7 @@ def user_pre_scan(self):
         if auto_mode_laser:
             self.execMacro("laser_scan_mode")
 
-    self.execMacro("acqrep")
+#    self.execMacro("acqrep")
 
 
 # @macro()

@@ -9,7 +9,7 @@ from sardana.macroserver.macro import Macro, macro, Type
 )
 def an(self, tth_pos, th_pos):
     """moving tth and th at the same time"""
-    self.execMacro(["mv", [["tth", tth_pos], ["th", th_pos]]])
+    self.execMacro(["mv", [["tth", tth_pos], ["thc", th_pos]]])
 
 
 @macro(
@@ -20,4 +20,4 @@ def an(self, tth_pos, th_pos):
 )
 def uan(self, tth_pos, th_pos):
     """update moving tth and th at the same time"""
-    self.execMacro(["umv", [["tth", tth_pos], ["th", th_pos]]])
+    self.execMacro(["umv", [["tth", tth_pos], ["thc", th_pos]]])

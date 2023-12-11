@@ -13,15 +13,15 @@ def fix(self):
 @macro()
 def pressure_check(self):
     try:
-        pressure_scattering = tango.DeviceProxy("rsxs/TPG26X/scattering").pressure
+        pressure_scattering = tango.DeviceProxy("rsxs/TPG261/scattering").pressure
     except:
         pressure_scattering = 9999.0
     try:
-        pressure_rzp = tango.DeviceProxy("rsxs/TPG26X/rzp").pressure
+        pressure_rzp = tango.DeviceProxy("rsxs/TPG261/rzp").pressure
     except:
         pressure_rzp = 9999.0
     try:
-        pressure_xpl = tango.DeviceProxy("sxr/TPG26X/pxs").pressure
+        pressure_xpl = tango.DeviceProxy("sxr/TPG261/pxs").pressure
     except:
         pressure_xpl = 9999.0
 
@@ -110,19 +110,15 @@ def end_of_the_day(self):
     self.execMacro("shutter_disable")
     self.execMacro("shutter_manual")
 
+    self.execMacro("umv", "thindisk_wp", "0")
     self.execMacro("laser_off")
     self.execMacro("tape_off")
     self.execMacro("target_off")
 
-    self.execMacro("pump_off")
     self.output("UMV OF WAVEPLATE TO 0 POSITION IS DISABLED!!!!!!!")
     self.output("CAUTION! PUMP BEAM MAY BE NOT BLOCKED!!!!!!!")
     self.output("MAKE SURE THAT TANGO DEVICE laser/AgilisAGP/pump POSITION IS 0")
     # self.execMacro("umv","wp","0")
-    try:
-        self.execMacro("mte_temp_set", 19)
-    except:
-        self.warning("Could not contact MTE to heat to 19 degrees C")
 
     try:
         self.execMacro("ccd_temp_set", 19)
@@ -142,6 +138,38 @@ def end_of_the_day(self):
 #    self.execMacro('umv', 'cryo_temp', 300)
 
 
+def turbo_on(self, name):
+    ds = self.getEnv("TangoDevices")
+    self.warning('Switching %s turbo on!'%name)
+    turbo = tango.DeviceProxy(ds['turbo_%s'%name])
+    turbo.turn_on()
+
+def turbo_off(self, name):
+    ds = self.getEnv("TangoDevices")
+    self.warning('Switching %s turbo off!'%name)
+    turbo = tango.DeviceProxy(ds['turbo_%s'%name])
+    turbo.turn_off()
+
+@macro()
+def turbo_optic_on(self):
+    turbo_on(self, 'optic')
+
+@macro()
+def turbo_ccd_on(self):
+    turbo_on(self, 'ccd')
+
+
+@macro()
+def turbo_optic_off(self):
+    turbo_off(self, 'optic')
+
+@macro()
+def turbo_ccd_off(self):
+    turbo_off(self, 'ccd')
+    
+
+
+
 @macro()
 def switch_to_mte(self):
     self.output("switching to mte ccd detector...")
@@ -149,7 +177,7 @@ def switch_to_mte(self):
     # self.execMacro("ccd_in")
     self.output("switching measurement group to pilc_mte")
     self.execMacro("set_meas", "pilcmte")
-    self.output("switching PiLCTimerCtrl.TriggerMode to 2")
+    self.output("switching PiLCTimerCtrl.TriggerMode to 2 (scattering)")
     pilc = self.getController("PiLCTimerCtrl")
     pilc.write_attribute("triggermode", 2)
     self.output(f"triggermode = %d" % pilc.read_attribute("triggermode").value)
@@ -167,9 +195,9 @@ def switch_to_lotte(self):
     self.output("switching to greateyes lotte detector...")
     self.output("switching measurement group to lotte_mgmt")
     self.execMacro("set_meas", "lotte_mgmt")
-    self.output("switching PiLCTimerCtrl.TriggerMode to 3")
+    self.output("switching PiLCTimerCtrl.TriggerMode to 2 (scattering)")
     pilc = self.getController("PiLCTimerCtrl")
-    pilc.write_attribute("triggermode", 3)
+    pilc.write_attribute("triggermode", 2)
     self.output(f"triggermode = %d" % pilc.read_attribute("triggermode").value)
     self.output("exporting acqconf to check CamTemp")
     # args are boolean: checkTape, checkTarget, checkMTETemp, checkCCDTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, darkModeLaser, autoShutterPump, waittime
@@ -258,7 +286,7 @@ def switch_to_bottom_diode(self):
 
 
 @macro()
-def switch_to_diode(self):
+def switch_to_IR_diode(self):
     self.output("switching to keithley voltmeter...")
     # self.output("driving ccd out")
     # self.execMacro("ccd_out")
