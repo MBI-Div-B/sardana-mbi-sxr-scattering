@@ -1,0 +1,434 @@
+tango_host: ampere.sxr.lab:10000
+macro_servers:
+  scattering:
+    tango_server: MacroServer
+    macro_path:
+    - /home/labuser/Sardana/experiments/scattering/macros
+    environment_db: /home/labuser/Sardana/experiments/scattering/macroserver.properties
+    doors:
+      Door_scattering_1:
+        tango_device: Door/scattering/1
+pools:
+  scattering:
+    tango_server: Pool
+    pool_path:
+    - /home/labuser/Sardana/experiments/scattering/controllers
+    measurement_groups:
+      epochonly:
+        channels:
+        - epoch
+      laser_diode:
+        channels:
+        - pilc_gate
+        - diode
+      lotte_and_pilc_only:
+        channels:
+        - pilc_gate
+        - lotte
+      lotte_mgmt:
+        channels:
+        - pilc_gate
+        - lotte
+        - sig1_lotte
+        - sig2_lotte
+        - sig3_lotte
+      moenchzmq_only:
+        channels:
+        - pilc_gate
+        - moench_analog
+        - sig2_moench_analog
+      moench_zmq_mgmt:
+        channels:
+        - pilc_gate
+        - epoch
+        - moench_analog
+        - moench_analog_pumped
+        - moench_counting
+        - moench_counting_pumped
+        - moench_threshold
+        - moench_threshold_pumped
+        - moench_previous_file_index
+        - moench_file_index
+        - moench_threshold_value
+        # - tcryo
+        # - tsample
+      pilcmte:
+        channels:
+        - epoch
+        - pilc_gate
+        - mte
+        # - crop
+        # - bkgd
+        # - sig1
+        # - sig2
+        # - sig3
+        # - sig4
+        # - sig5
+        # - sig6
+        # - sig7
+        # - sig8
+        # - smb1
+        # - smb2
+        # - smb3
+        # - smb4
+        # - smb5
+        # - smb6
+        # - smb7
+        # - smb8
+        # - smd1
+        # - smd1mb
+        # - ring
+      pilconly:
+        channels:
+        - pilc_gate
+      sic_diode_bottom_only:
+        channels:
+        - pilc_gate
+        - diode
+    controllers:
+    # Motors
+      mbiTangoMotorCtrl:
+        type: Motor
+        python_class: MbiTangoMotorController
+        python_module: MbiTangoMotorController.py
+        elements:
+          two_theta:
+            axis: 1
+            attributes:
+              Position:
+                max_value: 148
+                min_value: -8.0
+              Tango_Device: rsxs/phymotion/tth
+          pxs_lens_focus:
+            axis: 2
+            attributes:
+              Tango_Device: rsxs/phytronmcc2/pxs_lens_focus
+              Position:
+                min_value: 0
+                max_value: 12.0
+          target_trans:
+            axis: 3
+            attributes:
+              Tango_Device: rsxs/phytronmcc2/target_trans
+          magnet_z:
+            axis: 4
+            attributes:
+              Position:
+                min_value: -80
+                max_value: 100
+              Tango_Device: rsxs/phymotion/magnet_z
+          magnet_th:
+            axis: 5
+            attributes:
+              Position:
+                min_value: -150
+                max_value: 10
+              Tango_Device: rsxs/phymotion/magnet_theta
+          target_focus:
+            axis: 6
+            attributes:
+              Position:
+                min_value: 10
+                max_value: 43
+              Tango_Device: rsxs/phytronmcc2/target_focus
+          delay_stage:
+            axis: 7
+            attributes:
+              Tango_Device: laser/phytronmcc2/delay_stage
+          rzp_y_lin:
+            axis: 8
+            attributes:
+              Position:
+                min_value: 0
+                max_value: 55
+              Tango_Device: rsxs/phytronmcc2/rzp_y
+          rzp_theta:
+            axis: 9
+            attributes:
+              Tango_Device: rsxs/pihexapod/rzp_theta
+          rzp_chi:
+            axis: 10
+            attributes:
+              Tango_Device: rsxs/pihexapod/rzp_chi
+          rzp_phi:
+            axis: 11
+            attributes:
+              Tango_Device: rsxs/pihexapod/rzp_phi
+          rzp_x:
+            axis: 12
+            attributes:
+              Tango_Device: rsxs/pihexapod/rzp_x
+          rzp_y:
+            axis: 13
+            attributes:
+              Tango_Device: rsxs/pihexapod/rzp_y
+          rzp_z:
+            axis: 14
+            attributes:
+              Tango_Device: rsxs/pihexapod/rzp_z
+      SmarActMCS2Ctrl:
+        type: Motor
+        python_class: SmarActMCS2Controller
+        python_module: SmaractMCS2TangoMotorController.py
+        elements:
+          slit_width:
+            axis: 1
+            attributes:
+              Position:
+                max_value: -0.1
+                min_value: 9.0
+              Tango_Device: rsxs/smaractmcs2/slit_width
+          pol_z_scat:
+            axis: 2
+            attributes:
+              Tango_Device: rsxs/smaractmcs2/pol_x
+          pol_y_scat:
+            axis: 3
+            attributes:
+              Tango_Device: rsxs/smaractmcs2/pol_y
+      dummyMotorCtrl:
+        type: Motor
+        python_class: DummyMotorController
+        python_module: DummyMotorController.py
+        elements:
+          dummy:
+            axis: 1
+      tangoAttrMotorCtrl:
+        type: Motor
+        python_class: TangoAttrMotorController
+        python_module: TangoAttrMotorCtrl.py
+        elements:
+          thindisk_wp:
+            axis: 1
+            attributes:
+              TangoAttribute: thindisk/AgilisAGP/power/position
+              Position:
+                max_value: 45.0
+                min_value: 0.0
+              Offset: -78
+              TangoAttributeEncoderThreshold: 0.01
+      caenFastPsCtrl:
+        type: Motor
+        python_class: CAENFastPSTangoMotorController
+        python_module: CAENFastPSTangoMotorController.py
+        properties:
+          tangoFQDN: rsxs/caenfastps/magnet
+        elements:
+          mag_curr:
+            axis: 0
+            attributes:
+              Position:
+                max_value: 4
+                min_value: -4
+
+      # TimerCounter
+      epochCtrl:
+        type: CTExpChannel
+        python_class: EpochCounterTimerController
+        python_module: EpochCounterTimerController.py
+        elements:
+          epoch:
+            axis: 1
+      PiLCTimerCtrl:
+        type: CTExpChannel
+        python_class: PiLCCounterTimerController
+        python_module: PiLCCounterTimerController.py
+        properties:
+          tangofqdn: sxr/pilctriggergategenerator/1
+        attributes:
+          TriggerMode: 3
+        elements:
+          pilc_gate:
+            axis: 0
+      KeithleyDMM7510Ctrl:
+        type: CTExpChannel
+        python_class: KeithleyDMM7510CounterTimerController
+        python_module: KeithleyDMM7510CounterTimerController.py
+        elements:
+          diode:
+            axis: 1
+            attributes:
+              Tango_Device: rsxs/keithleydmm7510/diode
+          diode2:
+            axis: 2
+            attributes:
+              Tango_Device: rsxs/keithleydmm7510/diode2
+      PIMTECtrl:
+        type: TwoDExpChannel
+        python_class: PIMTETangoTwoDController
+        python_module: PIMTETangoTwoDController.py
+        properties:
+          tangofqdn: rsxs/LightField/mte
+        elements:
+          mte:
+            axis: 1
+      MoenchZmqCtrl:
+        type: TwoDExpChannel
+        python_class: MOENCHZMQTangoTwoDController
+        python_module: MOENCHZMQTangoTwoDController.py
+        elements:
+          moench_analog:
+            axis: 0
+          moench_analog_pumped:
+            axis: 1
+          moench_threshold:
+            axis: 2
+          moench_threshold_pumped:
+            axis: 3
+          moench_counting:
+            axis: 4
+          moench_counting_pumped:
+            axis: 5
+      LotteCtrl:
+        type: TwoDExpChannel
+        python_class: GreateyesTangoTwoDController
+        python_module: GreateyesTangoTwoDController.py
+        properties:
+          tangofqdn: sxr/greateyesccd/lotte
+        elements:
+          lotte:
+            axis: 1
+      TangoAttrCtCtrl:
+        type: CTExpChannel
+        python_module: TangoAttrCTCtrl.py
+        python_class: TangoAttrCTController
+        elements:
+          moench_previous_file_index:
+            axis: 1
+            attributes:
+              tangoattribute: rsxs/moenchZmqServer/bchip286/previous_file_index
+          moench_file_index:
+            axis: 2
+            attributes:
+              tangoattribute: rsxs/moenchZmqServer/bchip286/file_index
+          moench_threshold_value:
+            axis: 3
+            attributes:
+              tangoattribute: rsxs/moenchZmqServer/bchip286/threshold
+      TangoZeroDCtrl:
+        type: ZeroDExpChannel
+        python_class: TangoAttrZeroDController
+        python_module: TangoAttrZeroDCtrl.py
+        elements:
+          pressure_rzp:
+            axis: 1
+            attributes:
+              tangoattribute: rsxs/tpg261/rzp/pressure
+          pressure_scattering:
+            axis: 2
+            attributes:
+              tangoattribute: rsxs/tpg261/scattering/pressure
+          pressure_pxs:
+            axis: 3
+            attributes:
+              tangoattribute: rsxs/tpg261/pxs/pressure
+          pm:
+            axis: 4
+            attributes:
+              tangoattribute: laser/thorlabspm100/misc/power
+          tcryo:
+            axis: 5
+            attributes:
+              tangoattribute: rsxs/lakeshore335/cryo/inputb
+          tsample:
+            axis: 6
+            attributes:
+              tangoattribute: rsxs/lakeshore335/cryo/inputa
+      ### PseudoCounter
+      roiLotteCtrlSig1:
+        type: PseudoCounter
+        python_class: LaVuePseudoCounterController
+        python_module: laVuePseudoCounterController.py
+        attributes:
+          ROI_name: sig1
+          lavue_tangoDS: rsxs/lavuecontroller/henry
+        physical_roles:
+          input_image: lotte
+        elements:
+          sig1_lotte:
+            axis: 1
+      roiLotteCtrlSig2:
+        type: PseudoCounter
+        python_class: LaVuePseudoCounterController
+        python_module: laVuePseudoCounterController.py
+        attributes:
+          ROI_name: sig2
+          lavue_tangoDS: rsxs/lavuecontroller/henry
+        physical_roles:
+          input_image: lotte
+        elements:
+          sig2_lotte:
+            axis: 1
+      roiLotteCtrlSig3:
+        type: PseudoCounter
+        python_class: LaVuePseudoCounterController
+        python_module: laVuePseudoCounterController.py
+        attributes:
+          ROI_name: sig3
+          lavue_tangoDS: rsxs/lavuecontroller/henry
+        physical_roles:
+          input_image: lotte
+        elements:
+          sig3_lotte:
+            axis: 1
+      roiLotteCtrlSig4:
+        type: PseudoCounter
+        python_class: LaVuePseudoCounterController
+        python_module: laVuePseudoCounterController.py
+        attributes:
+          ROI_name: sig4
+          lavue_tangoDS: rsxs/lavuecontroller/henry
+        physical_roles:
+          input_image: lotte
+        elements:
+          sig4_lotte:
+            axis: 1
+      roiMoenchCtrlSig1:
+        type: PseudoCounter
+        python_class: LaVuePseudoCounterController
+        python_module: laVuePseudoCounterController.py
+        attributes:
+          ROI_name: sig1
+          lavue_tangoDS: rsxs/lavuecontroller/henry
+        physical_roles:
+          input_image: moench_analog
+        elements:
+          sig1_moench_analog:
+            axis: 1
+      roiMoenchCtrlSig2:
+        type: PseudoCounter
+        python_class: LaVuePseudoCounterController
+        python_module: laVuePseudoCounterController.py
+        attributes:
+          ROI_name: sig2
+          lavue_tangoDS: rsxs/lavuecontroller/henry
+        physical_roles:
+          input_image: moench_analog
+        elements:
+          sig2_moench_analog:
+            axis: 1
+      roiMoenchCtrlSig3:
+        type: PseudoCounter
+        python_class: LaVuePseudoCounterController
+        python_module: laVuePseudoCounterController.py
+        attributes:
+          ROI_name: sig3
+          lavue_tangoDS: rsxs/lavuecontroller/henry
+        physical_roles:
+          input_image: moench_analog
+        elements:
+          sig3_moench_analog:
+            axis: 1
+      roiMoenchCtrlSig4:
+        type: PseudoCounter
+        python_class: LaVuePseudoCounterController
+        python_module: laVuePseudoCounterController.py
+        attributes:
+          ROI_name: sig4
+          lavue_tangoDS: rsxs/lavuecontroller/henry
+        physical_roles:
+          input_image: moench_analog
+        elements:
+          sig4_moench_analog:
+            axis: 1
+
