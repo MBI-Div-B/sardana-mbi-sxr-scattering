@@ -12,14 +12,14 @@ def slit_out_completely(self):
 def slit_out(self):
     """Macro slit_out"""
     self.output("Moving slit out horizontally towards door...")
-    self.execMacro("umv", "slit_y", "26")
+    self.execMacro("umv", "slit_y", "35")
 
 
 @macro()
 def slit_in(self):
     """Macro slit_out"""
     self.output("Moving slit in horizontally towards window...")
-    self.execMacro("umv", "slit_y", "6")
+    self.execMacro("umv", "slit_y", "11.5")
 
 
 @macro()
