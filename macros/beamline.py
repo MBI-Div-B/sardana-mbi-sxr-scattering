@@ -1,13 +1,15 @@
 from sardana.macroserver.macro import Macro, macro, imacro, Type
 import tango
 from time import sleep
+import subprocess
 
 
 @macro()
 def fix(self):
-    self.execMacro("laser_ready_mode")
     self.execMacro("tape_off")
     self.execMacro("target_off")
+    self.execMacro("laser_ready_mode")
+
 
 
 @macro()
@@ -65,21 +67,21 @@ def start_of_the_day(self):
     # self.execMacro("acqconf", 1, 1, 1, 1, 1, 1, 1, 1, 0)
     self.execMacro("acqconf", 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0)
     if pressures_low_enough:
-        self.output("The pressures are low enough. Are all valves open?")
+        self.output("The pressures are low enough. Are all valves open? [y / n]")
         answer = ""
         while answer not in ["y", "n"]:
-            answer = self.input("Cool the camera to -40°C ?")
+            answer = self.input("Cool the camera to -50°C ? [y / n]")
         if answer == "n":
             self.output("Not cooling camera.")
         else:
             answer = ""
             while answer not in ["y", "n"]:
-                answer = self.input("Is the camera software running?")
+                answer = self.input("Is the camera software running? [y / n]")
             if answer == "n":
                 self.output("Not cooling camera.")
             else:
                 self.output("Cooling camera.")
-                self.execMacro("mte_temp_set", -40)
+                self.execMacro("ccd_temp_set", -50)
     else:
         self.output(
             "The pressures are NOT low enough! Fix them and then you can cool the camera automatically!"
@@ -87,7 +89,7 @@ def start_of_the_day(self):
 
     answer = ""
     while answer not in ["y", "n"]:
-        answer = self.input("Setting laser to ready mode?")
+        answer = self.input("Setting laser to ready mode? [y / n]")
     if answer == "n":
         self.output("Open the valves.")
     else:
@@ -97,6 +99,13 @@ def start_of_the_day(self):
 #    self.execMacro('magnet_off')
 #    self.execMacro('umv', 'cryo_temp', 300)
 
+@macro()
+def sync(self):
+    scanDir = self.getEnv("ScanDir")
+    self.output("synchronize data to NAS")
+    result = subprocess.run(
+    f'rsync -r -t -g -v --progress -s {scanDir} data_ampere@nasbsxr.sxr.lab:/share/Data/henry.sxr.lab/RSXS/data',shell = True, stdout=subprocess.PIPE,)
+    self.output(result.stdout.decode("utf-8"))
 
 @macro()
 def end_of_the_day(self):
@@ -106,11 +115,16 @@ def end_of_the_day(self):
         self.output((i + 1) * ".")
         sleep(1)
 
+    self.execMacro("umv", "thindisk_wp", "0")
+    self.output('look at the infoscreen and note the laser power now!')
+    self.output('resuming in 5s')
+    sleep(5)
+
+
     self.execMacro("laser_sleep_mode")
     self.execMacro("shutter_disable")
     self.execMacro("shutter_manual")
 
-    self.execMacro("umv", "thindisk_wp", "0")
     self.execMacro("laser_off")
     self.execMacro("tape_off")
     self.execMacro("target_off")
@@ -133,6 +147,15 @@ def end_of_the_day(self):
         self.execMacro("umv", "mag_curr", "0")
     except:
         self.output("Magnet can not be turned off. CaenFastPS off?")
+    try:
+        self.execMacro("sync")
+    except:
+        self.warning("Sync data")
+    
+    try:
+        self.execMacro("start_puzzing_all")
+    except:
+        self.warning("Could not contact Puzzi properly.")
 
 
 #    self.execMacro('umv', 'cryo_temp', 300)
@@ -203,7 +226,7 @@ def switch_to_lotte(self):
     # args are boolean: checkTape, checkTarget, checkMTETemp, checkCCDTemp, startTape, stopTape, startTarget, stopTarget, autoModeLaser, darkModeLaser, autoShutterPump, waittime
     self.execMacro("pressure_check")
     self.execMacro("acqconf", 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0)
-    self.execMacro("ccd_temp_set", -35)
+    # self.execMacro("ccd_temp_set", -35)
     self.output(
         "don't forget to switch\nLaVue Tango Attribute 'sxr/greateyesccd/lotte/images' "
     )
@@ -216,7 +239,8 @@ def switch_to_moench_laser(self):
     # self.output("driving ccd out")
     # self.execMacro("ccd_out")
     self.output("switching measurement group to moench_zmq_mgmt")
-    self.execMacro("set_meas", "moench_zmq_mgmt")
+    self.execMacro("set_meas", "moenchzmq_only")
+    # self.execMacro("set_meas", "moench_zmq_mgmt")
     self.output("switching PiLCTimerCtrl.TriggerMode to 1")
     pilc = self.getController("PiLCTimerCtrl")
     pilc.write_attribute("triggermode", 1)
