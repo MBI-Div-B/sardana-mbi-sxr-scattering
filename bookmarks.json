@@ -1,0 +1,266 @@
+{
+  "mv_cmd": "umv",
+  "bookmarks": {
+    "Fe_edge": [
+      {
+        "name": "rzp_y",
+        "position": 53.44
+      },
+      {
+        "name": "rzp_phi",
+        "position": -53.990925
+      },
+      {
+        "name": "rzp_theta",
+        "position": -50.0
+      },
+      {
+        "name": "energy",
+        "position": 707.0
+      }
+    ],
+    "Gd_edge": [
+      {
+        "name": "rzp_y",
+        "position": 29.090000000000007
+      },
+      {
+        "name": "rzp_phi",
+        "position": -78.622206
+      }
+    ],
+    "Dy_edge": [
+      {
+        "name": "rzp_y",
+        "position": 18.04
+      },
+      {
+        "name": "rzp_phi",
+        "position": -83.989784
+      }
+    ],
+    "slit_1mm": [
+      {
+        "name": "slit_z",
+        "position": 0.0
+      },
+      {
+        "name": "slit_width",
+        "position": 0.9999989789999999
+      }
+    ],
+    "slit_in": [
+      {
+        "name": "slit_y",
+        "position": 11.6
+      }
+    ],
+    "slit_out": [
+      {
+        "name": "slit_y",
+        "position": 40.0
+      }
+    ],
+    "slit_closed": [
+      {
+        "name": "slit_z",
+        "position": 0.14250000000000007
+      },
+      {
+        "name": "slit_width",
+        "position": 0.4999978930000002
+      }
+    ],
+    "slit_500mum": [
+      {
+        "name": "slit_z",
+        "position": 1.5425000000000004
+      },
+      {
+        "name": "slit_width",
+        "position": 0.6000032769999999
+      }
+    ],
+    "all_out": [
+      {
+        "name": "thc",
+        "position": 7.812421841890682e-06
+      },
+      {
+        "name": "tth",
+        "position": 0.0
+      },
+      {
+        "name": "xc",
+        "position": 3.0
+      },
+      {
+        "name": "slit_y",
+        "position": 40.0
+      }
+    ],
+    "pol_in": [
+      {
+        "name": "pol_x_scat",
+        "position": 10.000000777
+      },
+      {
+        "name": "pol_z_scat",
+        "position": -2.000003104
+      },
+      {
+        "name": "pol_y_scat",
+        "position": 7.499994271
+      }
+    ],
+    "pol_out": [
+      {
+        "name": "pol_x_scat",
+        "position": 9.999998687
+      },
+      {
+        "name": "pol_z_scat",
+        "position": -2.000003104
+      },
+      {
+        "name": "pol_y_scat",
+        "position": -9.999995329
+      }
+    ],
+    "sample_100nm": [
+      {
+        "name": "zc",
+        "position": 36.3
+      }
+    ],
+    "pol_magnet_in": [
+      {
+        "name": "pol_x_scat",
+        "position": 10.000000578
+      },
+      {
+        "name": "pol_z_scat",
+        "position": 10.700003225
+      },
+      {
+        "name": "pol_y_scat",
+        "position": -0.700021286
+      }
+    ],
+    "pol_no_magnet_in": [
+      {
+        "name": "pol_x_scat",
+        "position": 10.000000578
+      },
+      {
+        "name": "pol_z_scat",
+        "position": 10.700003225
+      },
+      {
+        "name": "pol_y_scat",
+        "position": 11.300065866
+      }
+    ],
+    "sample_150nm": [
+      {
+        "name": "zc",
+        "position": 10.89875
+      }
+    ],
+    "electromagnet_in": [
+      {
+        "name": "magnet_z",
+        "position": 77.0
+      }
+    ],
+    "sample_1302": [
+      {
+        "name": "zc",
+        "position": 28.4
+      }
+    ],
+    "pol_1402": [
+      {
+        "name": "pol_x_scat",
+        "position": 0.194094138
+      },
+      {
+        "name": "pol_y_scat",
+        "position": 10.000001987
+      },
+      {
+        "name": "pol_z_scat",
+        "position": 8.49999893
+      }
+    ],
+    "sample_in_pol_out": [
+      {
+        "name": "thc",
+        "position": -34.999937500625
+      }
+    ],
+    "sample_out_pol_in": [
+      {
+        "name": "thc",
+        "position": -34.999937500625
+      }
+    ],
+    "pol_17_09": [
+      {
+        "name": "pol_z_rsxs",
+        "position": -2.79999165
+      },
+      {
+        "name": "pol_y_rsxs",
+        "position": -2.29992178
+      },
+      {
+        "name": "pol_th_rsxs",
+        "position": 39.999893115
+      }
+    ],
+    "sample_17_09": [
+      {
+        "name": "thc",
+        "position": 7.812492187220244e-05
+      },
+      {
+        "name": "yc",
+        "position": -5.9997314453125
+      },
+      {
+        "name": "xc",
+        "position": -0.80009765625
+      },
+      {
+        "name": "zc",
+        "position": 18.298125
+      }
+    ],
+    "magnet_17_09": [
+      {
+        "name": "magnet_th",
+        "position": -128.0
+      },
+      {
+        "name": "magnet_z",
+        "position": 71.733125
+      }
+    ],
+    "test": [
+      {
+        "name": "yc",
+        "position": 6.0
+      },
+      {
+        "name": "xc",
+        "position": 0.0
+      },
+      {
+        "name": "zc",
+        "position": 35.0
+      }
+    ]
+  },
+  "autosavefile": "/home/labuser/Sardana/experiments/scattering/bookmarks.json"
+}
