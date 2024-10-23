@@ -50,43 +50,16 @@ pools:
         - moench_previous_file_index
         - moench_file_index
         - moench_threshold_value
-        # - tcryo
-        # - tsample
-      pilcmte:
-        channels:
-        - epoch
-        - pilc_gate
-        - mte
-        # - crop
-        # - bkgd
-        # - sig1
-        # - sig2
-        # - sig3
-        # - sig4
-        # - sig5
-        # - sig6
-        # - sig7
-        # - sig8
-        # - smb1
-        # - smb2
-        # - smb3
-        # - smb4
-        # - smb5
-        # - smb6
-        # - smb7
-        # - smb8
-        # - smd1
-        # - smd1mb
-        # - ring
+      # pilcmte:
+      #   channels:
+      #   - epoch
+      #   - pilc_gate
+      #   - mte
       pilconly:
         channels:
         - pilc_gate
-      sic_diode_bottom_only:
-        channels:
-        - pilc_gate
-        - diode
     controllers:
-    # Motors
+# Motors
       mbiTangoMotorCtrl:
         type: Motor
         python_class: MbiTangoMotorController
@@ -166,6 +139,26 @@ pools:
             axis: 14
             attributes:
               Tango_Device: rsxs/pihexapod/rzp_z
+          zc:
+            axis: 15
+            attributes:
+              Tango_Device: rsxs/schneidermdriveaxis/z
+          yc:
+            axis: 16
+            attributes:
+              Tango_Device: rsxs/schneidermdriveaxis/y
+          xc:
+            axis: 17
+            attributes:
+              Tango_Device: rsxs/schneidermdriveaxis/x
+          thc:
+            axis: 18
+            attributes:
+              Tango_Device: rsxs/schneidermdriveaxis/theta
+          ccd_z:
+            axis: 19
+            attributes:
+              Tango_Device: rsxs/phymotion/ccd_z
       SmarActMCS2Ctrl:
         type: Motor
         python_class: SmarActMCS2Controller
@@ -221,7 +214,7 @@ pools:
                 max_value: 4
                 min_value: -4
 
-      # TimerCounter
+# TimerCounter
       epochCtrl:
         type: CTExpChannel
         python_class: EpochCounterTimerController
@@ -334,7 +327,7 @@ pools:
             axis: 6
             attributes:
               tangoattribute: rsxs/lakeshore335/cryo/inputa
-      ### PseudoCounter
+### PseudoCounter
       roiLotteCtrlSig1:
         type: PseudoCounter
         python_class: LaVuePseudoCounterController
