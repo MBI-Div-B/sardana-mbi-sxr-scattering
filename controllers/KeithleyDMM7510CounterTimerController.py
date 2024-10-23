@@ -76,7 +76,9 @@ class KeithleyDMM7510CounterTimerController(CounterTimerController):
         if name == "Tango_Device":
             self.axis_extra_pars[axis][name] = value
             try:
-                self.axis_extra_pars[axis]["Proxy"] = DeviceProxy(value)
+                proxy = DeviceProxy(value)
+                self.axis_extra_pars[axis]["Proxy"] = proxy
+                # proxy.measurement_type = 4
                 self._log.info("axis {:d} DeviceProxy set to: {:s}".format(axis, value))
             except Exception as e:
                 self.axis_extra_pars[axis]["Proxy"] = None
