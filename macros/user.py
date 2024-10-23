@@ -6,6 +6,21 @@ from dirsync import sync
 import os
 import subprocess
 
+DEFAULT_TANGODEVICES = {
+    'target_rot': 'rsxs/PhytronMCC2/target_rot',
+    'debris_tape': 'rsxs/debristape/1',
+    'thindisk_thorlabsSC10_seed': 'thindisk/ThorlabsSC10/seed',
+    'thindisk_thorlabsMFF100_compressor': 'thindisk/ThorlabsMFF100/compressor',
+    'thorlabsMFF100_probe': 'rsxs/ThorlabsMFF100/probe',
+    'thorlabsMFF100_pump': 'rsxs/ThorlabsMFF100/pump',
+    'turbo_optic': 'rsxs/turbovac/rzp',
+    'turbo_ccd': 'rsxs/turbovac/scattering',
+    'ccd': 'sxr/greateyesccd/lotte',
+}
+
+@macro()
+def set_default_tango_device_environment(self):
+    self.setEnv('TangoDevices', DEFAULT_TANGODEVICES)
 
 @macro()
 def user_pre_acq(self):
