@@ -271,8 +271,8 @@ def fluenceconf(self, pumpHor, pumpVer, refl, repRate):
     fluencePM.refl = refl
     fluencePM.repRate = repRate
 
-    power = self.getPseudoMotor("power")
-    fluence = self.getPseudoMotor("fluence")
+    power = self.getPseudoMotor("power_rsxs")
+    fluence = self.getPseudoMotor("fluence_rsxs")
     minPower, maxPower = power.getPositionObj().getLimits()
 
     trans = 1 - (refl / 100)
@@ -310,7 +310,7 @@ def fluencerep(self):
         repRate,
     )
 
-    fluence = self.getPseudoMotor("fluence")
+    fluence = self.getPseudoMotor("fluence_rsxs")
     [minFluence, maxFluence] = fluence.getPositionObj().getLimits()
 
     self.output(
@@ -390,7 +390,7 @@ def powerconf(self, P0, Pm, offset, period):
     power.P0 = P0
     power.Pm = Pm
 
-    self.execMacro("set_lim", "power", P0, (Pm + P0))
+    self.execMacro("set_lim", "power_rsxs", P0, (Pm + P0))
     self.execMacro("powerrep")
 
 
