@@ -156,9 +156,14 @@ def end_of_the_day(self):
         self.execMacro("start_puzzing_all")
     except:
         self.warning("Could not contact Puzzi properly.")
+        
 
-
-#    self.execMacro('umv', 'cryo_temp', 300)
+@macro()        
+def start_puzzing_all(self):
+    ds = self.getEnv("TangoDevices")
+    self.info('Starting Puzzi now')
+    puzzi = tango.DeviceProxy(ds['puzzi'])
+    puzzi.start_cleaning_all()
 
 
 def turbo_on(self, name):

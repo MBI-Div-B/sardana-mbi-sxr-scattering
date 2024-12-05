@@ -26,6 +26,7 @@ def set_default_tango_device_environment(self):
 def user_pre_acq(self):
     """Macro user_pre_acq"""
     acqConf = self.getEnv("acqConf")
+    altOn = acqConf['altOn']
 
     try:
         waittime = acqConf["waitTime"]
@@ -61,11 +62,42 @@ def user_pre_acq(self):
     if check_mte_temp:
         self.execMacro("mte_check")
 
+    if altOn:
+        # move magnet to minus amplitude
+        magnConf = self.getEnv('magnConf')
+        ampl = magnConf['ampl']
+        magwaittime = magnConf['waitTime']
+        magnet = self.getMotion(["mag_curr"])
+        
+        magnet.move(-1*ampl)
+        
+        self.debug('mag. waiting for %.2f s', magwaittime)
+        sleep(magwaittime)        
+        
+        parent = self.getParentMacro()
+        if parent:
+            integ_time  = parent.integ_time
+            mnt_grp     = self.getObj(self.getEnv('ActiveMntGrp'), type_class=Type.MeasurementGroup)
+            state, data = mnt_grp.count(integ_time)
+                       
+        magnet.move(1*ampl)
+        
+        self.debug('mag. waiting for %.2f s', magwaittime)
+        sleep(magwaittime)                
+    else:
+        pass
+
 
 @macro()
 def user_pre_scan(self):
     """Macro user_pre_scan"""
     acqConf = self.getEnv("acqConf")
+    altOn    = acqConf['altOn']
+    
+    if altOn:
+        parent = self.getParentMacro()
+        if parent:
+            parent._gScan.deterministic_scan = False
 
     try:
         start_tape = acqConf["startTape"]

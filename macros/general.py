@@ -422,7 +422,41 @@ def roirep(self):
     self.execMacro("genv", "DetectorROIs")
 
 
+@imacro([
+        ["ampl", Type.Float, Optional, 
+          "amplitude of mag. field in altOn scans [A]"],
+        ["waittime", Type.Float, Optional, 
+         "waittime after magnet switching [s]"]
+        ])
+def magnconf(self, ampl, waittime):
+    """Macro magnampl"""
+    magnConf = self.getEnv('magnConf')    
+    
+    if ampl is None:
+        label, unit = "Amplitude", "A"
+        ampl = self.input("Set magnet amplitude:", data_type=Type.Float,
+                          title="Magnet Amplitude", key=label, unit=unit,
+                          default_value=magnConf['ampl'], minimum=0.0, 
+                          maximum=10)
+    
+    if waittime is None:
+        label, unit = "Waittime", "s"
+        waittime = self.input("Set magnet waittime:", data_type=Type.Float,
+                          title="Magnet Waittime", key=label, unit=unit,
+                          default_value=magnConf['waitTime'], minimum=0.0, 
+                          maximum=100)
+    
+    
+    magnConf['ampl']     = ampl
+    magnConf['waitTime'] = waittime
+    self.setEnv('magnConf', magnConf)
+    self.execMacro('magnrep')
+
+
 @macro()
-def acqRep(self):
-    """Macro acqRep"""
-    self.output("Running acqRep...")
+def magnrep(self):
+    # return all magnconf values
+    magnConf = self.getEnv('magnConf')
+    self.output('Magnet Settings : magn. amplitude = %.2f |'
+                'A magn. waittime = %.2f s', 
+                magnConf['ampl'], magnConf['waitTime'])

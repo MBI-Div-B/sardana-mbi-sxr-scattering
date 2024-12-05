@@ -1,0 +1,358 @@
+tango_host: ampere.sxr.lab:10000
+macro_servers:
+  spectroscopy:
+    tango_server: MacroServer
+    macro_path:
+    - /home/labuser/Sardana/experiments/spectroscopy/macros
+    environment_db: /home/labuser/Sardana/experiments/spectroscopy/macroserver.properties
+    doors:
+      Door_spectroscopy_1:
+        tango_device: Door/spectroscopy/1
+pools:
+  spectroscopy:
+    tango_server: Pool
+    pool_path:
+    - /home/labuser/Sardana/experiments/spectroscopy/controllers
+    measurement_groups:
+      PiLC_only:
+        channels:
+        - pilc_gate
+      mte_only:
+        channels:
+        - mte_spec:
+            plot_axes: [<idx>, <idx>]
+            data_units: No unit
+      spectroscopy_mgmt:
+        channels:
+        - epoch:
+            enabled: false
+        - mte_spec
+        - sig1_mte_spec
+        - pilc_gate
+        - sig2_mte_spec:
+            plot_type: 1
+            plot_axes: [<mov>]
+    controllers:
+      mbiTangoMotorCtrl_spec:
+        type: Motor
+        python_class: MbiTangoMotorController
+        python_module: MbiTangoMotorController.py
+        elements:
+          toroid_x:
+            axis: 1
+            attributes:
+              Position:
+                max_value: 26.0
+                min_value: 0.0
+              Tango_Device: spec/PhytronMCC2/toroid_x
+          toroid_z:
+            axis: 2
+            attributes:
+              Offset: -5.57125
+              Tango_Device: spec/PhytronMCC2/toroid_z
+              Position:
+                min_value: -5.0
+                max_value: 5.0
+          toroid_theta:
+            axis: 3
+            attributes:
+              Offset: 0
+              Position:
+                min_value: -662.5
+                max_value: 1337.5
+              Tango_Device: spec/PhytronMCC2/toroid_theta
+              Step_per_unit: 0.8
+              Velocity: 500
+          toroid_chi:
+            axis: 4
+            attributes:
+              Position:
+                min_value: -2000.0
+                max_value: 2000.0
+              Offset: 0
+              Tango_Device: spec/PhytronMCC2/toroid_chi
+          ccd_x:
+            axis: 5
+            attributes:
+              Position:
+                min_value: 0.0
+                max_value: 60.0
+              Tango_Device: spec/PhytronMCC2/ccd_x
+          target_translation_spec:
+            axis: 6
+            attributes:
+              Position:
+                max_value: 70.0
+                min_value: 0.0
+              Tango_Device: spec/PhytronMCC2/target_trans
+          pxs_focus_spec:
+            axis: 8
+            attributes:
+              Position:
+                min_value: 1.0
+                max_value: 12.0
+              Tango_Device: spec/PhytronMCC2/pxs_lens_focus
+          vls_x:
+            axis: 9
+            attributes:
+              Offset: -27
+              Tango_Device: spec/PhytronMCC2/vls_x
+              Position:
+                min_value: -27.0
+                max_value: 0.0
+          vls_z:
+            axis: 11
+            attributes:
+              Tango_Device: spec/PhytronMCC2/vls_z
+              Offset: -10
+              Position:
+                min_value: -12.0
+                max_value: 6.0
+          ccd_y:
+            axis: 14
+            attributes:
+              Offset: 0
+              Position:
+                max_value: 37.0
+                min_value: 0.0
+              Tango_Device: spec/PhytronMCC2/ccd_y
+          vls_theta:
+            axis: 15
+            attributes:
+              Offset: -3775.5
+              Tango_Device: spec/PhytronMCC2/vls_theta
+              Position:
+                min_value: 600.0
+                max_value: 2900.0
+          filterwheel:
+            axis: 16
+            attributes:
+              Tango_Device: spec/PhytronMCC2/filterwheel
+              Position:
+                min_value: -100.0
+                max_value: 400.0
+              Offset: 0
+          vls_y:
+            axis: 17
+            attributes:
+              Offset: 0
+              Tango_Device: spec/PhytronMCC2/vls_y
+              Position:
+                max_value: 25.0
+                min_value: -20.0
+          beamblock_y:
+            axis: 18
+            attributes:
+              Tango_Device: spec/PhytronMCC2/beamblock_y
+              Position:
+                min_value: 0.0
+                max_value: 20.0
+          magnet_z_spec:
+            axis: 20
+            attributes:
+              Position:
+                min_value: 0.0
+                max_value: 6.0
+              Tango_Device: spec/Phytronmcc2/magnet_z
+          magnet_y_spec:
+            axis: 21
+            attributes:
+              Tango_Device: spec/Phytronmcc2/magnet_y
+              Position:
+                max_value: 12.0
+                min_value: 0.0
+          px_ccd_y:
+            axis: 22
+            attributes:
+              Tango_Device: spec/phytronmcc2/ccd_y
+          delay_stage_spec:
+            axis: 23
+            attributes:
+              Position:
+                min_value: -100.0
+                max_value: 100.0
+              Offset: -243.58125
+              Tango_Device: laser/phymotion/delay_stage
+      dummyMotorCtrl_spec:
+        type: Motor
+        python_class: DummyMotorController
+        python_module: DummyMotorController.py
+        elements:
+          dummy_spec:
+            axis: 1
+      SmarActMCS2MotorCtrl_spec:
+        type: Motor
+        python_class: SmarActMCS2Controller
+        python_module: SmaractMCS2TangoMotorController.py
+        elements:
+          pol_x:
+            axis: 1
+            attributes:
+              Position:
+                max_value: 11.0
+                min_value: -11.0
+              Tango_Device: spec/SmaractMCS2Motor/pol_x
+          pol_y:
+            axis: 2
+            attributes:
+              Position:
+                min_value: -11.0
+                max_value: 11.0
+              Offset: -0.249998931
+              Tango_Device: spec/SmaractMCS2Motor/pol_y
+          pol_z:
+            axis: 3
+            attributes:
+              Position:
+                max_value: 11.0
+                min_value: -11.0
+              Tango_Device: spec/SmaractMCS2Motor/pol_z
+              Offset: 7.26400000061743e-06
+          sample_x:
+            axis: 4
+            attributes:
+              Position:
+                max_value: 11.0
+                min_value: -11.0
+              Tango_Device: spec/SmaractMCS2Motor/sample_x
+          sample_y:
+            axis: 5
+            attributes:
+              Tango_Device: spec/SmaractMCS2Motor/sample_y
+              Position:
+                min_value: -11.0
+                max_value: 11.0
+          sample_z:
+            axis: 6
+            attributes:
+              Tango_Device: spec/SmaractMCS2Motor/sample_z
+              Position:
+                min_value: -11.0
+                max_value: 11.0
+          pol_theta:
+            axis: 7
+            attributes:
+              Tango_Device: spec/SmaractMCS2/pol_th
+      tangoAttrMotorCtrl_spec:
+        type: Motor
+        python_class: TangoAttrMotorController
+        python_module: TangoAttrMotorCtrl.py
+        elements:
+          thindisk_laser_wp:
+            axis: 1
+            attributes:
+              TangoAttribute: thindisk/AgilisAGP/power/position
+              Position:
+                max_value: 45.0
+                min_value: 0.0
+              Offset: -78.00002
+              TangoAttributeEncoderThreshold: 0.01
+          mag_curr_spec:
+            axis: 2
+            attributes:
+              Position:
+                max_value: 4.0
+                min_value: -4.0
+              TangoAttributeEncoderThreshold: 0.001
+              TangoAttribute: spec/caenfastps/magnet_sample/current
+          horpxs:
+            axis: 3
+            attributes:
+              TangoAttribute: spec/zabertmm/horpxs/position
+              Position:
+                min_value: -62000.0
+                max_value: 62000.0
+          verpxs:
+            axis: 4
+            attributes:
+              TangoAttribute: spec/zabertmm/verpxs/position
+              Position:
+                max_value: 62000.0
+                min_value: -62000.0
+      MagnetCtrl_spec:
+        type: PseudoMotor
+        python_class: MagnetPseudoMotorController
+        python_module: MagnetPseudoMotorController.py
+        physical_roles:
+          InputMotor: mag_curr_spec
+        elements:
+          mag_field_spec:
+            axis: 1
+            attributes:
+              Position:
+                max_value: 66.0
+                min_value: -66.0
+              factor: 36
+      delayCtrlSpec:
+        type: PseudoMotor
+        python_class: DelayPseudoMotorController
+        python_module: DelayPseudoMotorController.py
+        physical_roles:
+          InputMotor: delay_stage_spec
+        elements:
+          delay_spec:
+            axis: 1
+            attributes:
+              Position:
+                max_value: 500.0
+                min_value: -500.0
+      PiLCTimerCtrl_spec:
+        type: CTExpChannel
+        python_class: PiLCCounterTimerController
+        python_module: PiLCCounterTimerController.py
+        properties:
+          tangofqdn: sxr/pilctriggergategenerator/1
+        attributes:
+          TriggerMode: 3
+        elements:
+          pilc_gate_spec:
+            axis: 0
+      epochCtrl_spec:
+        type: CTExpChannel
+        python_class: EpochCounterTimerController
+        python_module: EpochCounterTimerController.py
+        elements:
+          epoch_spec:
+            axis: 0
+      tangoAttrZeroDCtrl_spec:
+        type: ZeroDExpChannel
+        python_class: TangoAttrZeroDController
+        python_module: TangoAttrZeroDCtrl.py
+        elements:
+          pressure_ccd:
+            axis: 1
+            attributes:
+              TangoAttribute: spec/TPG261/ccd/pressure
+      pi-mteCtrl_spec:
+        type: TwoDExpChannel
+        python_class: PIMTETangoTwoDController
+        python_module: PIMTETangoTwoDController.py
+        properties:
+          tangofqdn: sxr/LightFieldCamera/mte
+        elements:
+          mte_spec:
+            axis: 0
+      roiMTECtrl_sig1_spec:
+        type: PseudoCounter
+        python_class: LaVuePseudoCounterController
+        python_module: laVuePseudoCounterController.py
+        attributes:
+          ROI_name: sig1
+          lavue_tangoDS: spectroscopy/lavuecontroller/henryetta
+        physical_roles:
+          input_image: mte_spec
+        elements:
+          sig1_mte_spec:
+            axis: 1
+      roiMTECtrl_sig2_spec:
+        type: PseudoCounter
+        python_class: LaVuePseudoCounterController
+        python_module: laVuePseudoCounterController.py
+        attributes:
+          ROI_name: sig2
+          lavue_tangoDS: spectroscopy/lavuecontroller/henryetta
+        physical_roles:
+          input_image: mte_spec
+        elements:
+          sig2_mte_spec:
+            axis: 1

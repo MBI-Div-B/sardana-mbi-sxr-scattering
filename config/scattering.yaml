@@ -65,12 +65,13 @@ pools:
         python_class: MbiTangoMotorController
         python_module: MbiTangoMotorController.py
         elements:
-          two_theta:
+          tth:
             axis: 1
             attributes:
               Position:
-                max_value: 148
-                min_value: -8.0
+                max_value: 8.0
+                min_value: -148.0
+                abs_change: 0.05
               Tango_Device: rsxs/phymotion/tth
           pxs_lens_focus:
             axis: 2
@@ -159,6 +160,14 @@ pools:
             axis: 19
             attributes:
               Tango_Device: rsxs/phymotion/ccd_z
+          slit_y:
+            axis: 20
+            attributes:
+              Tango_Device: rsxs/phymotion/slit_y
+          slit_z:
+            axis: 21
+            attributes:
+              Tango_Device: rsxs/phymotion/slit_z
       SmarActMCS2Ctrl:
         type: Motor
         python_class: SmarActMCS2Controller
@@ -200,6 +209,16 @@ pools:
                 min_value: 0.0
               Offset: -78
               TangoAttributeEncoderThreshold: 0.01
+          mhor:
+            axis: 2
+            attributes:
+              TangoAttribute: rsxs/ZaberTMMAxis/mhor/position
+              TangoAttributeEncoderThreshold: 1
+          mver:
+            axis: 3
+            attributes:
+              TangoAttribute: rsxs/ZaberTMMAxis/mver/position
+              TangoAttributeEncoderThreshold: 1
       caenFastPsCtrl:
         type: Motor
         python_class: CAENFastPSTangoMotorController
@@ -229,7 +248,7 @@ pools:
         properties:
           tangofqdn: sxr/pilctriggergategenerator/1
         attributes:
-          TriggerMode: 3
+          triggermode: 1
         elements:
           pilc_gate:
             axis: 0

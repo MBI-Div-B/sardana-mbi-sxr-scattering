@@ -247,18 +247,60 @@
         "position": 71.733125
       }
     ],
-    "test": [
+    "pol1411": [
       {
-        "name": "yc",
-        "position": 6.0
+        "name": "pol_y_scat",
+        "position": -5.499865783
       },
       {
-        "name": "xc",
-        "position": 0.0
+        "name": "pol_th_scat",
+        "position": 21.999796115
       },
+      {
+        "name": "pol_z_scat",
+        "position": -11.344994739
+      }
+    ],
+    "sample1411": [
       {
         "name": "zc",
-        "position": 35.0
+        "position": 14.5
+      }
+    ],
+    "magnet1411": [
+      {
+        "name": "magnet_z",
+        "position": 67.3
+      }
+    ],
+    "zoneplates1411": [
+      {
+        "name": "rzp_phi",
+        "position": -0.418989780963
+      },
+      {
+        "name": "rzp_x",
+        "position": -8.99999220721
+      },
+      {
+        "name": "rzp_y",
+        "position": 9.68000489874
+      },
+      {
+        "name": "rzp_z",
+        "position": 1.31727039443e-07
+      },
+      {
+        "name": "rzp_y_lin",
+        "position": 50.96
+      },
+      {
+        "name": "rzp_theta",
+        "position": 0.0880177204699
+      },
+      {
+        "name": "rzp_chi",
+        "position": -4.26388470831e-07
       }
     ]
   },
