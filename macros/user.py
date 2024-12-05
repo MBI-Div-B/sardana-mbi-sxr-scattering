@@ -16,6 +16,7 @@ DEFAULT_TANGODEVICES = {
     'turbo_optic': 'rsxs/turbovac/rzp',
     'turbo_ccd': 'rsxs/turbovac/scattering',
     'ccd': 'sxr/greateyesccd/lotte',
+    'puzzi': 'lab/roborock/puzzi',
 }
 
 @macro()
@@ -213,6 +214,7 @@ def user_pre_move(self):
     # self.info('In user pre move')
 
     acqConf = self.getEnv("acqConf")
+    ds = self.getEnv("TangoDevices")
 
     try:
         auto_shutter_pump = acqConf["autoShutterPump"]
@@ -227,11 +229,11 @@ def user_pre_move(self):
             close_pump_shutter = False
             for mot in parent.motors:
                 self.output(mot)
-                if mot.name.lower().strip() in ["h", "k", "l", "th", "tth", "q", "thc"]:
+                if mot.name.lower().strip() in ["h", "k", "l", "th", "tth", "q", "thc", 'two_theta']:
                     close_pump_shutter = True
             if close_pump_shutter:
                 # check if the pump shutter is open
-                proxy = DeviceProxy("laser/ThorlabsMFF100/pump")
+                proxy = DeviceProxy(ds['thorlabsMFF100_pump'])
                 mirror_state = proxy.mffstate
                 while mirror_state not in [0, 1]:
                     sleep(0.1)
@@ -248,6 +250,7 @@ def user_post_move(self):
     # self.info('In user post move')
 
     acqConf = self.getEnv("acqConf")
+    ds = self.getEnv("TangoDevices")
 
     try:
         auto_shutter_pump = acqConf["autoShutterPump"]
@@ -263,20 +266,12 @@ def user_post_move(self):
                 # check if we really need to open the shutter or not
                 open_pump_shutter = False
                 for mot in parent.motors:
-                    if mot.name.lower().strip() in [
-                        "h",
-                        "k",
-                        "l",
-                        "th",
-                        "tth",
-                        "q",
-                        "thc",
-                    ]:
+                    if mot.name.lower().strip() in ["h", "k", "l", "th", "tth", "q", "thc", 'two_theta']:
                         open_pump_shutter = True
 
                 if open_pump_shutter:
                     # check if the pump shutter is closed
-                    proxy = DeviceProxy("laser/ThorlabsMFF100/pump")
+                    proxy = DeviceProxy(ds['thorlabsMFF100_pump'])
                     mirror_state = proxy.mffstate
                     while mirror_state not in [0, 1]:
                         sleep(0.1)
